@@ -30,12 +30,8 @@ export function CreateItemModal({
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="sr-only">Create new item</DialogTitle>
-
-          <DialogDescription className="sr-only">
-            Create new item
-          </DialogDescription>
-
+          <DialogTitle className="sr-only">Title</DialogTitle>
+          <DialogDescription className="sr-only">Description</DialogDescription>
           <div>{children}</div>
         </DialogHeader>
       </DialogContent>

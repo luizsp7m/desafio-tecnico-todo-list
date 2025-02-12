@@ -1,4 +1,4 @@
-export type Todo = {
+export type Card = {
   id: string;
   title: string;
   description?: string;

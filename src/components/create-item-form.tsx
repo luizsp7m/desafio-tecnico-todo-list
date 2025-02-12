@@ -17,10 +17,10 @@ import { useBoard } from "@/hooks/use-board";
 
 function formTitle(type: CreateItemFormProps["type"]) {
   switch (type) {
-    case "category":
+    case "column":
       return "Adicionar categoria";
 
-    case "todo":
+    case "card":
       return "Adicionar tarefa";
 
     default:
@@ -40,15 +40,17 @@ const createItemSchema = z.object({
 type CreateItemSchema = z.infer<typeof createItemSchema>;
 
 interface CreateItemFormProps {
-  type: "category" | "todo";
+  type: "column" | "card";
+  columnId?: string;
   handleCloseModal: () => void;
 }
 
 export function CreateItemForm({
   type,
+  columnId,
   handleCloseModal,
 }: CreateItemFormProps) {
-  const { createNewCategory } = useBoard();
+  const { createNewColumn, createNewCard } = useBoard();
 
   const form = useForm<CreateItemSchema>({
     resolver: zodResolver(createItemSchema),
@@ -58,8 +60,14 @@ export function CreateItemForm({
   });
 
   function onSubmit(values: CreateItemSchema) {
-    if (type === "category") {
-      createNewCategory({ title: values.title });
+    if (type === "column") {
+      createNewColumn({ title: values.title });
+      handleCloseModal();
+      return;
+    }
+
+    if (type === "card" && columnId) {
+      createNewCard({ title: values.title, columnId });
       handleCloseModal();
       return;
     }

@@ -1,75 +1,58 @@
-import { useCreateItemModal } from "@/hooks/use-create-item-modal";
 import { Button } from "./ui/button";
 import { CreateItemModal } from "./create-item-modal";
 import { CreateItemForm } from "./create-item-form";
 import { useBoard } from "@/hooks/use-board";
-
-import {
-  DragDropContext,
-  Draggable,
-  Droppable,
-  DropResult,
-} from "@hello-pangea/dnd";
-import { Trash } from "lucide-react";
+import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
+import { ColumnDraggable } from "./column-draggable";
+import { useFormModal } from "@/hooks/use-form-modal";
 
 export function Board() {
-  const {
-    createItemModalIsOpen,
-    handleOpenCreateItemModal,
-    handleCloseCreateItemModal,
-  } = useCreateItemModal();
+  const { formModalIsOpen, handleOpenFormModal, handleCloseFormModal } =
+    useFormModal();
 
-  const { categories, setCategories, deleteCategory } = useBoard();
+  const { columns, setColumns } = useBoard();
 
-  function onDragEnd(result: DropResult<string>) {
+  function onDragEnd(result: DropResult) {
     const { source, destination, type } = result;
 
-    if (!destination) {
-      return;
-    }
+    if (!destination) return;
 
-    if (type === "category") {
-      const reorderedCategories = [...categories];
-      const [movedColumn] = reorderedCategories.splice(source.index, 1);
-      reorderedCategories.splice(destination.index, 0, movedColumn);
-      setCategories(reorderedCategories);
-    }
-
-    if (type === "todo") {
-      const sourceCategory = categories.find(
-        (cat) => cat.id === source.droppableId,
-      );
-      const destinationCategory = categories.find(
-        (cat) => cat.id === destination.droppableId,
+    if (type === "column") {
+      const updatedColumns = [...columns];
+      const [movedColumn] = updatedColumns.splice(source.index, 1);
+      updatedColumns.splice(destination.index, 0, movedColumn);
+      setColumns(updatedColumns);
+    } else {
+      const sourceColumn = columns.find((col) => col.id === source.droppableId);
+      const destinationColumn = columns.find(
+        (col) => col.id === destination.droppableId,
       );
 
-      if (!sourceCategory || !destinationCategory) return;
+      if (!sourceColumn || !destinationColumn) return;
 
-      if (sourceCategory.id === destinationCategory.id) {
-        const updatedTodos = [...sourceCategory.todos];
-        const [movedTodo] = updatedTodos.splice(source.index, 1);
-        updatedTodos.splice(destination.index, 0, movedTodo);
+      if (sourceColumn === destinationColumn) {
+        const updatedCards = [...sourceColumn.cards];
+        const [movedCard] = updatedCards.splice(source.index, 1);
+        updatedCards.splice(destination.index, 0, movedCard);
 
-        setCategories((prev) =>
-          prev.map((cat) =>
-            cat.id === sourceCategory.id
-              ? { ...cat, todos: updatedTodos }
-              : cat,
+        setColumns((prev) =>
+          prev.map((col) =>
+            col.id === sourceColumn.id ? { ...col, cards: updatedCards } : col,
           ),
         );
       } else {
-        const sourceTodos = [...sourceCategory.todos];
-        const destinationTodos = [...destinationCategory.todos];
-        const [movedTodo] = sourceTodos.splice(source.index, 1);
-        destinationTodos.splice(destination.index, 0, movedTodo);
+        const sourceCards = [...sourceColumn.cards];
+        const destinationCards = [...destinationColumn.cards];
+        const [movedCard] = sourceCards.splice(source.index, 1);
+        destinationCards.splice(destination.index, 0, movedCard);
 
-        setCategories((prev) =>
-          prev.map((cat) =>
-            cat.id === sourceCategory.id
-              ? { ...cat, todos: sourceTodos }
-              : cat.id === destinationCategory.id
-                ? { ...cat, todos: destinationTodos }
-                : cat,
+        setColumns((prev) =>
+          prev.map((col) =>
+            col.id === sourceColumn.id
+              ? { ...col, cards: sourceCards }
+              : col.id === destinationColumn.id
+                ? { ...col, cards: destinationCards }
+                : col,
           ),
         );
       }
@@ -78,85 +61,29 @@ export function Board() {
 
   return (
     <div className="space-y-3">
-      <Button onClick={handleOpenCreateItemModal}>Adicionar categoria</Button>
+      <Button onClick={handleOpenFormModal}>Adicionar categoria</Button>
 
       <CreateItemModal
-        isOpen={createItemModalIsOpen}
-        handleCloseModal={handleCloseCreateItemModal}
+        isOpen={formModalIsOpen}
+        handleCloseModal={handleCloseFormModal}
       >
-        <CreateItemForm
-          type="category"
-          handleCloseModal={handleCloseCreateItemModal}
-        />
+        <CreateItemForm type="column" handleCloseModal={handleCloseFormModal} />
       </CreateItemModal>
 
       <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="board" type="category" direction="horizontal">
+        <Droppable droppableId="board" type="column" direction="horizontal">
           {(provided) => (
             <div
-              className="flex space-x-3 overflow-auto"
               ref={provided.innerRef}
               {...provided.droppableProps}
+              className="flex items-start space-x-3 overflow-auto"
             >
-              {categories.map((category, colIndex) => (
-                <Draggable
-                  key={category.id}
-                  draggableId={category.id}
-                  index={colIndex}
-                >
-                  {(provided) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      className="w-64 rounded bg-secondary"
-                    >
-                      <div
-                        {...provided.dragHandleProps}
-                        className="flex cursor-grab items-center justify-between border-b border-b-primary-foreground p-3 text-sm"
-                      >
-                        {category.title}
-
-                        <Button
-                          size="icon"
-                          variant="secondary"
-                          onClick={() => deleteCategory(category.id)}
-                        >
-                          <Trash />
-                        </Button>
-                      </div>
-
-                      <Droppable droppableId={category.id} type="todo">
-                        {(provided) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.droppableProps}
-                            className="min-h-[128px]"
-                          >
-                            {category.todos.map((todo, todoIndex) => (
-                              <Draggable
-                                key={todo.id}
-                                draggableId={todo.id}
-                                index={todoIndex}
-                              >
-                                {(provided) => (
-                                  <div
-                                    ref={provided.innerRef}
-                                    {...provided.draggableProps}
-                                    {...provided.dragHandleProps}
-                                    className="cursor-pointer bg-zinc-700 p-3 text-sm"
-                                  >
-                                    {todo.title}
-                                  </div>
-                                )}
-                              </Draggable>
-                            ))}
-                            {provided.placeholder}
-                          </div>
-                        )}
-                      </Droppable>
-                    </div>
-                  )}
-                </Draggable>
+              {columns.map((column, columnIndex) => (
+                <ColumnDraggable
+                  key={column.id}
+                  column={column}
+                  columnIndex={columnIndex}
+                />
               ))}
               {provided.placeholder}
             </div>
