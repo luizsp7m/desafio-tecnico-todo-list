@@ -13,6 +13,7 @@ import {
 
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { useBoard } from "@/hooks/use-board";
 
 function formTitle(type: CreateItemFormProps["type"]) {
   switch (type) {
@@ -47,6 +48,8 @@ export function CreateItemForm({
   type,
   handleCloseModal,
 }: CreateItemFormProps) {
+  const { createNewCategory } = useBoard();
+
   const form = useForm<CreateItemSchema>({
     resolver: zodResolver(createItemSchema),
     defaultValues: {
@@ -55,7 +58,11 @@ export function CreateItemForm({
   });
 
   function onSubmit(values: CreateItemSchema) {
-    console.log({ type, values });
+    if (type === "category") {
+      createNewCategory({ title: values.title });
+      handleCloseModal();
+      return;
+    }
   }
 
   return (
