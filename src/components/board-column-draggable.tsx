@@ -47,16 +47,12 @@ export function BoardColumnDraggable({
 
   return (
     <>
-      <Draggable
-        key={boardColumn.id}
-        draggableId={boardColumn.id}
-        index={boardColumnIndex}
-      >
+      <Draggable draggableId={boardColumn.id} index={boardColumnIndex}>
         {(provided) => (
           <div
             ref={provided.innerRef}
             {...provided.draggableProps}
-            className="mr-3 w-80 rounded bg-secondary shadow-sm"
+            className="mr-3 w-80 min-w-80 max-w-80 rounded bg-secondary shadow-sm"
           >
             <div
               {...provided.dragHandleProps}
@@ -77,6 +73,7 @@ export function BoardColumnDraggable({
                 <div
                   ref={provided.innerRef}
                   className="-mb-2 min-h-[128px] p-3"
+                  {...provided.droppableProps}
                 >
                   {boardColumn.taskCards.map((taskCard, taskCardIndex) => (
                     <TaskCardDraggable

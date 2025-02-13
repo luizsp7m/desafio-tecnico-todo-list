@@ -110,10 +110,8 @@ export function BoardProvider({ children }: BoardContextProviderProps) {
               {
                 id: createUniqueId(),
                 title,
-                comments: [],
                 description: null,
                 dueDate: null,
-                tags: [],
                 createdAt: createTimestamp(),
               },
             ],

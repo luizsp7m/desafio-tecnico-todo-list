@@ -71,8 +71,6 @@ export function TaskCardForm({
   });
 
   function onSubmit(values: TaskCardFormData) {
-    console.log(values);
-
     if (selectedTaskCard) {
       upsertTaskCard({
         boardColumnId,

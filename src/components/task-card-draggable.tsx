@@ -17,37 +17,34 @@ export function TaskCardDraggable({
   handleOpenFormModal,
 }: CardProps) {
   return (
-    <Draggable
-      key={taskCard.id}
-      draggableId={taskCard.id}
-      index={taskCardIndex}
-    >
+    <Draggable draggableId={taskCard.id} index={taskCardIndex}>
       {(provided, snapshot) => (
         <div
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          onClick={handleOpenFormModal}
+          onClick={() => {
+            if (!snapshot.isDragging) handleOpenFormModal();
+          }}
           className={clsx(
             "mb-2 space-y-2 truncate rounded bg-white p-3 text-sm text-muted-foreground shadow-sm dark:bg-zinc-700 dark:text-white",
-
             {
               "bg-zinc-300 dark:bg-zinc-500": snapshot.isDragging,
             },
           )}
         >
-          <span className="truncate">{taskCard.title}</span>
+          <div className="flex items-center justify-between gap-2">
+            <span className="truncate">{taskCard.title}</span>
 
-          {taskCard.dueDate && (
-            <div>
+            {taskCard.dueDate && (
               <div className="flex items-center gap-1">
                 <Calendar size={14} />
                 <span className="text-[0.75rem]">
                   {dateFormatter(taskCard.dueDate)}
                 </span>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       )}
     </Draggable>
