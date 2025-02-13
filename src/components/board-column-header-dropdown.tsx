@@ -18,25 +18,23 @@ export function BoardColumnHeaderDropdown({
   handleOpenDeleteAlert,
 }: BoardColumnHeaderDropdownProps) {
   return (
-    <>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" className="rounded-full">
-            <EllipsisVertical />
-          </Button>
-        </DropdownMenuTrigger>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="icon" className="rounded-full">
+          <EllipsisVertical />
+        </Button>
+      </DropdownMenuTrigger>
 
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={handleOpenBoardColumnFormModal}>
-            <Pen /> Renomear
-          </DropdownMenuItem>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem onClick={handleOpenBoardColumnFormModal}>
+          <Pen /> Renomear
+        </DropdownMenuItem>
 
-          <DropdownMenuItem onClick={handleOpenDeleteAlert}>
-            <Trash />
-            Excluir
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </>
+        <DropdownMenuItem onClick={handleOpenDeleteAlert}>
+          <Trash />
+          Excluir
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

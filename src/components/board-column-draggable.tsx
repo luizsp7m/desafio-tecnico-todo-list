@@ -1,16 +1,12 @@
 import { Draggable, Droppable } from "@hello-pangea/dnd";
-import { Plus } from "lucide-react";
 import { TaskCardDraggable } from "./task-card-draggable";
-import { FormModal } from "./form-modal";
-import { useFormModal } from "@/hooks/use-form-modal";
 import { BoardColumnHeaderDropdown } from "./board-column-header-dropdown";
-import { TaskCard } from "@/types/task-card";
-import { TaskCardForm } from "./task-card-form";
 import { useDeleteAlert } from "@/hooks/use-delete-alert";
 import { DeleteBoardColumnAlert } from "./delete-board-column-alert";
-import { useBoard } from "@/hooks/use-board";
 import { BoardColumn } from "@/types/board-column";
-import { BoardColumnForm } from "./board-column-form";
+import { AddTaskCardButton } from "./add-task-card-button";
+import { useBoardColumnFormModalStore } from "@/store/board-column-form-modal-store";
+import { useBoardStore } from "@/store/board-store";
 
 interface BoardColumnDraggableProps {
   boardColumn: BoardColumn;
@@ -21,24 +17,11 @@ export function BoardColumnDraggable({
   boardColumn,
   boardColumnIndex,
 }: BoardColumnDraggableProps) {
-  const {
-    formModalIsOpen: boardColumnFormModalIsOpen,
-    selectedItem: selectedBoardColumn,
-    handleOpenFormModal: handleOpenBoardColumnFormModal,
-    handleCloseFormModal: handleCloseBoardColumnFormModal,
-  } = useFormModal<BoardColumn>();
-
-  const {
-    formModalIsOpen: taskCardFormModalIsOpen,
-    selectedItem: selectedTaskCard,
-    handleOpenFormModal: handleOpenTaskCardFormModal,
-    handleCloseFormModal: handleCloseTaskCardModalModal,
-  } = useFormModal<TaskCard>();
+  const { handleOpenBoardColumnFormModal } = useBoardColumnFormModalStore();
+  const { deleteBoardColumn } = useBoardStore();
 
   const { deleteAlertIsOpen, handleOpenDeleteAlert, handleCloseDeleteAlert } =
     useDeleteAlert();
-
-  const { deleteBoardColumn } = useBoard();
 
   function handleDeleteBoardColumn() {
     deleteBoardColumn(boardColumn.id);
@@ -80,9 +63,7 @@ export function BoardColumnDraggable({
                       key={taskCard.id}
                       taskCard={taskCard}
                       taskCardIndex={taskCardIndex}
-                      handleOpenFormModal={() =>
-                        handleOpenTaskCardFormModal(taskCard)
-                      }
+                      boardColumnId={boardColumn.id}
                     />
                   ))}
                   {provided.placeholder}
@@ -90,38 +71,10 @@ export function BoardColumnDraggable({
               )}
             </Droppable>
 
-            <button
-              onClick={() => handleOpenTaskCardFormModal()}
-              className="flex w-full items-center justify-center gap-2 border-t p-3 text-sm dark:border-t-primary/10"
-            >
-              <Plus size={16} />
-              Adicionar tarefa
-            </button>
+            <AddTaskCardButton boardColumnId={boardColumn.id} />
           </div>
         )}
       </Draggable>
-
-      <FormModal
-        isOpen={boardColumnFormModalIsOpen}
-        handleCloseModal={handleCloseBoardColumnFormModal}
-      >
-        <BoardColumnForm
-          handleCloseModal={handleCloseBoardColumnFormModal}
-          selectedBoardColumn={selectedBoardColumn}
-        />
-      </FormModal>
-
-      <FormModal
-        isOpen={taskCardFormModalIsOpen}
-        handleCloseModal={handleCloseTaskCardModalModal}
-      >
-        <TaskCardForm
-          boardColumnId={boardColumn.id}
-          handleCloseModal={handleCloseTaskCardModalModal}
-          isFullMode={!!selectedTaskCard}
-          selectedTaskCard={selectedTaskCard}
-        />
-      </FormModal>
 
       <DeleteBoardColumnAlert
         isOpen={deleteAlertIsOpen}

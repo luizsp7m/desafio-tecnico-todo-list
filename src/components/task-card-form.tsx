@@ -13,10 +13,10 @@ import {
 
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { useBoard } from "@/hooks/use-board";
 import { Textarea } from "./ui/textarea";
 import { DatePicker } from "./ui/date-picker";
-import { TaskCard } from "@/types/task-card";
+import { useBoardStore } from "@/store/board-store";
+import { useTaskCardFormModalStore } from "@/store/task-card-form-modal-store";
 
 const taskCardFormSchema = z.object({
   title: z
@@ -38,29 +38,20 @@ const taskCardFormSchema = z.object({
   dueDate: z.date().optional(),
 });
 
-type TaskCardFormData = z.infer<typeof taskCardFormSchema>;
+export type TaskCardFormData = z.infer<typeof taskCardFormSchema>;
 
-interface TaskCardFormProps {
-  selectedTaskCard?: TaskCard | null;
-  boardColumnId: string;
-  isFullMode?: boolean;
-  handleCloseModal: () => void;
-}
+export function TaskCardForm() {
+  const { upsertTaskCard } = useBoardStore();
 
-export function TaskCardForm({
-  selectedTaskCard,
-  boardColumnId,
-  isFullMode = false,
-  handleCloseModal,
-}: TaskCardFormProps) {
-  const { upsertTaskCard } = useBoard();
+  const { selectedTaskCard, boardColumnId, handleCloseTaskCardFormModal } =
+    useTaskCardFormModalStore();
 
   const form = useForm<TaskCardFormData>({
     resolver: zodResolver(taskCardFormSchema),
     defaultValues: selectedTaskCard
       ? {
           title: selectedTaskCard.title,
-          description: selectedTaskCard.description ?? "",
+          description: selectedTaskCard.description || undefined,
           dueDate: selectedTaskCard.dueDate
             ? new Date(selectedTaskCard.dueDate)
             : undefined,
@@ -71,6 +62,8 @@ export function TaskCardForm({
   });
 
   function onSubmit(values: TaskCardFormData) {
+    if (!boardColumnId) return;
+
     if (selectedTaskCard) {
       upsertTaskCard({
         boardColumnId,
@@ -81,7 +74,7 @@ export function TaskCardForm({
       upsertTaskCard({ boardColumnId, data: values });
     }
 
-    handleCloseModal();
+    handleCloseTaskCardFormModal();
   }
 
   return (
@@ -108,7 +101,7 @@ export function TaskCardForm({
             )}
           />
 
-          {isFullMode && (
+          {!!selectedTaskCard && (
             <>
               <FormField
                 control={form.control}
@@ -141,7 +134,11 @@ export function TaskCardForm({
           )}
 
           <div className="flex justify-end gap-2">
-            <Button type="button" variant="outline" onClick={handleCloseModal}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleCloseTaskCardFormModal}
+            >
               Cancelar
             </Button>
 

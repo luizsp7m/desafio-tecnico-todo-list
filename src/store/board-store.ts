@@ -1,5 +1,6 @@
 import { boardColumnsData } from "@/assets/board-columns-data";
 import { BoardColumnFormData } from "@/components/board-column-form";
+import { TaskCardFormData } from "@/components/task-card-form";
 import { BoardColumn } from "@/types/board-column";
 import { createTimestamp } from "@/utils/create-timestamp";
 import { createUniqueId } from "@/utils/create-unique-id";
@@ -10,11 +11,20 @@ interface UpsertBoardColumnProps {
   data: BoardColumnFormData;
 }
 
+interface UpsertTaskCardProps {
+  taskCardId?: string;
+  boardColumnId: string;
+  data: TaskCardFormData;
+}
+
 type BoardStore = {
   boardColumns: BoardColumn[];
   setBoardColumns: (boardColumns: BoardColumn[]) => void;
+
   upsertBoardColumn: (props: UpsertBoardColumnProps) => void;
   deleteBoardColumn: (boardColumnId: string) => void;
+
+  upsertTaskCard: (props: UpsertTaskCardProps) => void;
 };
 
 export const useBoardStore = create<BoardStore>((set) => ({
@@ -59,4 +69,55 @@ export const useBoardStore = create<BoardStore>((set) => ({
         (boardColumn) => boardColumn.id !== boardColumnId,
       ),
     })),
+
+  upsertTaskCard: ({ taskCardId, boardColumnId, data }) =>
+    set((state) =>
+      taskCardId
+        ? {
+            boardColumns: state.boardColumns.map((boardColumn) => {
+              if (boardColumn.id === boardColumnId) {
+                return {
+                  ...boardColumn,
+                  taskCards: boardColumn.taskCards.map((taskCard) => {
+                    if (taskCard.id === taskCardId) {
+                      return {
+                        ...taskCard,
+                        title: data.title,
+                        description: data.description || null,
+                        dueDate: data.dueDate
+                          ? data.dueDate.toISOString()
+                          : null,
+                      };
+                    }
+
+                    return taskCard;
+                  }),
+                };
+              }
+
+              return boardColumn;
+            }),
+          }
+        : {
+            boardColumns: state.boardColumns.map((boardColumn) => {
+              if (boardColumn.id === boardColumnId) {
+                return {
+                  ...boardColumn,
+                  taskCards: [
+                    ...boardColumn.taskCards,
+                    {
+                      id: createUniqueId(),
+                      title: data.title,
+                      description: null,
+                      dueDate: null,
+                      createdAt: createTimestamp(),
+                    },
+                  ],
+                };
+              }
+
+              return boardColumn;
+            }),
+          },
+    ),
 }));

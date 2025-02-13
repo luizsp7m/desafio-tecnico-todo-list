@@ -3,8 +3,8 @@ import { create } from "zustand";
 
 interface BoardColumnFormModalStoreProps {
   boardColumnFormModalIsOpen: boolean;
-
   selectedBoardColumn: BoardColumn | null;
+
   handleOpenBoardColumnFormModal: (
     selectedBoardColumn: BoardColumn | null,
   ) => void;
@@ -19,7 +19,7 @@ export const useBoardColumnFormModalStore =
 
     handleOpenBoardColumnFormModal: (selectedBoardColumn) =>
       set(() => ({
-        selectedBoardColumn: selectedBoardColumn,
+        selectedBoardColumn,
         boardColumnFormModalIsOpen: true,
       })),
 

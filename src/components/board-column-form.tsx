@@ -13,9 +13,8 @@ import {
 
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { useBoard } from "@/hooks/use-board";
-import { BoardColumn } from "@/types/board-column";
 import { useBoardColumnFormModalStore } from "@/store/board-column-form-modal-store";
+import { useBoardStore } from "@/store/board-store";
 
 const boardColumnFormSchema = z.object({
   title: z
@@ -29,13 +28,11 @@ const boardColumnFormSchema = z.object({
 
 export type BoardColumnFormData = z.infer<typeof boardColumnFormSchema>;
 
-interface BoardColumnFormProps {
-  selectedBoardColumn?: BoardColumn | null;
-}
+export function BoardColumnForm() {
+  const { handleCloseBoardColumnFormModal, selectedBoardColumn } =
+    useBoardColumnFormModalStore();
 
-export function BoardColumnForm({ selectedBoardColumn }: BoardColumnFormProps) {
-  const { upsertBoardColumn } = useBoard();
-  const { handleCloseBoardColumnFormModal } = useBoardColumnFormModalStore();
+  const { upsertBoardColumn } = useBoardStore();
 
   const form = useForm<BoardColumnFormData>({
     resolver: zodResolver(boardColumnFormSchema),

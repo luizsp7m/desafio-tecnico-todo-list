@@ -4,18 +4,21 @@ import { Draggable } from "@hello-pangea/dnd";
 import { BookText, Calendar } from "lucide-react";
 import { dateFormatter } from "@/utils/date-formatter";
 import { TaskCard } from "@/types/task-card";
+import { useTaskCardFormModalStore } from "@/store/task-card-form-modal-store";
 
 interface CardProps {
   taskCard: TaskCard;
   taskCardIndex: number;
-  handleOpenFormModal: () => void;
+  boardColumnId: string;
 }
 
 export function TaskCardDraggable({
   taskCard,
   taskCardIndex,
-  handleOpenFormModal,
+  boardColumnId,
 }: CardProps) {
+  const { handleOpenTaskCardFormModal } = useTaskCardFormModalStore();
+
   return (
     <Draggable draggableId={taskCard.id} index={taskCardIndex}>
       {(provided, snapshot) => (
@@ -24,7 +27,11 @@ export function TaskCardDraggable({
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           onClick={() => {
-            if (!snapshot.isDragging) handleOpenFormModal();
+            if (!snapshot.isDragging)
+              handleOpenTaskCardFormModal({
+                boardColumnId,
+                selectedTaskCard: taskCard,
+              });
           }}
           className={clsx(
             "mb-2 space-y-2 truncate rounded bg-white p-3 text-sm text-muted-foreground shadow-sm dark:bg-zinc-700 dark:text-white",
