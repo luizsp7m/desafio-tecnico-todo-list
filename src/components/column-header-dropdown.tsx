@@ -8,27 +8,15 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 
-import { FormModal } from "./form-modal";
-import { ColumnForm } from "./column-form";
-import { useFormModal } from "@/hooks/use-form-modal";
-import { Column } from "@/types/column";
-
 interface ColumnHeaderDropdownProps {
-  column: Column;
+  handleOpenColumnFormModal: () => void;
   handleOpenDeleteAlert: () => void;
 }
 
 export function ColumnHeaderDropdown({
-  column,
+  handleOpenColumnFormModal,
   handleOpenDeleteAlert,
 }: ColumnHeaderDropdownProps) {
-  const {
-    formModalIsOpen,
-    selectedItem: selectedColumn,
-    handleOpenFormModal,
-    handleCloseFormModal,
-  } = useFormModal<Column>();
-
   return (
     <>
       <DropdownMenu>
@@ -39,7 +27,7 @@ export function ColumnHeaderDropdown({
         </DropdownMenuTrigger>
 
         <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={() => handleOpenFormModal(column)}>
+          <DropdownMenuItem onClick={handleOpenColumnFormModal}>
             <Pen /> Renomear
           </DropdownMenuItem>
 
@@ -49,16 +37,6 @@ export function ColumnHeaderDropdown({
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-
-      <FormModal
-        isOpen={formModalIsOpen}
-        handleCloseModal={handleCloseFormModal}
-      >
-        <ColumnForm
-          handleCloseModal={handleCloseFormModal}
-          selectedColumn={selectedColumn}
-        />
-      </FormModal>
     </>
   );
 }

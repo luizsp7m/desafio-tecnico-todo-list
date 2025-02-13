@@ -10,6 +10,7 @@ import { CardForm } from "./card-form";
 import { useDeleteAlert } from "@/hooks/use-delete-alert";
 import { DeleteColumnAlert } from "./delete-column-alert";
 import { useBoard } from "@/hooks/use-board";
+import { ColumnForm } from "./column-form";
 
 interface ColumnDraggableProps {
   column: Column;
@@ -18,10 +19,17 @@ interface ColumnDraggableProps {
 
 export function ColumnDraggable({ column, columnIndex }: ColumnDraggableProps) {
   const {
-    formModalIsOpen,
+    formModalIsOpen: columnFormModalIsOpen,
+    selectedItem: selectedColumn,
+    handleOpenFormModal: handleOpenColumnFormModal,
+    handleCloseFormModal: handleCloseColumnFormModal,
+  } = useFormModal<Column>();
+
+  const {
+    formModalIsOpen: cardFormModalIsOpen,
     selectedItem: selectedCard,
-    handleOpenFormModal,
-    handleCloseFormModal,
+    handleOpenFormModal: handleOpenCardFormModal,
+    handleCloseFormModal: handleCloseCardModalModal,
   } = useFormModal<Card>();
 
   const { deleteAlertIsOpen, handleOpenDeleteAlert, handleCloseDeleteAlert } =
@@ -41,7 +49,7 @@ export function ColumnDraggable({ column, columnIndex }: ColumnDraggableProps) {
           <div
             ref={provided.innerRef}
             {...provided.draggableProps}
-            className="w-64 rounded bg-secondary"
+            className="mr-3 w-64 rounded bg-secondary shadow-sm"
           >
             <div
               {...provided.dragHandleProps}
@@ -50,7 +58,9 @@ export function ColumnDraggable({ column, columnIndex }: ColumnDraggableProps) {
               {column.title}
 
               <ColumnHeaderDropdown
-                column={column}
+                handleOpenColumnFormModal={() =>
+                  handleOpenColumnFormModal(column)
+                }
                 handleOpenDeleteAlert={handleOpenDeleteAlert}
               />
             </div>
@@ -66,7 +76,7 @@ export function ColumnDraggable({ column, columnIndex }: ColumnDraggableProps) {
                       key={card.id}
                       card={card}
                       cardIndex={cardIndex}
-                      handleOpenFormModal={() => handleOpenFormModal(card)}
+                      handleOpenFormModal={() => handleOpenCardFormModal(card)}
                     />
                   ))}
                   {provided.placeholder}
@@ -75,7 +85,7 @@ export function ColumnDraggable({ column, columnIndex }: ColumnDraggableProps) {
             </Droppable>
 
             <button
-              onClick={() => handleOpenFormModal()}
+              onClick={() => handleOpenCardFormModal()}
               className="flex w-full items-center justify-center gap-2 border-t p-3 text-sm dark:border-t-primary/10"
             >
               <Plus size={16} />
@@ -86,12 +96,22 @@ export function ColumnDraggable({ column, columnIndex }: ColumnDraggableProps) {
       </Draggable>
 
       <FormModal
-        isOpen={formModalIsOpen}
-        handleCloseModal={handleCloseFormModal}
+        isOpen={columnFormModalIsOpen}
+        handleCloseModal={handleCloseColumnFormModal}
+      >
+        <ColumnForm
+          handleCloseModal={handleCloseColumnFormModal}
+          selectedColumn={selectedColumn}
+        />
+      </FormModal>
+
+      <FormModal
+        isOpen={cardFormModalIsOpen}
+        handleCloseModal={handleCloseCardModalModal}
       >
         <CardForm
           columnId={column.id}
-          handleCloseModal={handleCloseFormModal}
+          handleCloseModal={handleCloseCardModalModal}
           selectedCard={selectedCard}
         />
       </FormModal>

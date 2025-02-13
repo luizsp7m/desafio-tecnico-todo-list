@@ -77,7 +77,7 @@ export function Board() {
             <div
               ref={provided.innerRef}
               {...provided.droppableProps}
-              className="flex items-start space-x-3 overflow-auto"
+              className="flex items-start overflow-x-auto"
             >
               {columns.map((column, columnIndex) => (
                 <ColumnDraggable

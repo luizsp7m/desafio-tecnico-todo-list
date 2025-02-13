@@ -23,7 +23,7 @@ export function CardDraggable({
           {...provided.dragHandleProps}
           onClick={handleOpenFormModal}
           className={clsx(
-            "mb-2 rounded bg-white p-3 text-sm text-muted-foreground dark:bg-zinc-700 dark:text-white",
+            "mb-2 rounded bg-white p-3 text-sm text-muted-foreground shadow-sm dark:bg-zinc-700 dark:text-white",
 
             {
               "bg-zinc-300 dark:bg-zinc-500": snapshot.isDragging,
