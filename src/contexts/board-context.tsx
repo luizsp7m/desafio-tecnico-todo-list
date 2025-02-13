@@ -1,21 +1,20 @@
-import { columnsData } from "@/assets/columns-data";
-import { Column } from "@/types/column";
+import { boardColumnsData } from "@/assets/board-columns-data";
+import { BoardColumn } from "@/types/board-column";
 import { createTimestamp } from "@/utils/create-timestamp";
 import { createUniqueId } from "@/utils/create-unique-id";
 import { createContext, ReactNode, useState } from "react";
 
-interface UpsertColumnProps {
-  columnId?: string;
+interface UpsertBoardColumnProps {
+  boardColumnId?: string;
 
   data: {
     title: string;
   };
 }
 
-interface UpsertCardProps {
-  columnId: string;
-
-  cardId?: string;
+interface UpsertTaskCardProps {
+  boardColumnId: string;
+  taskCardId?: string;
 
   data: {
     title: string;
@@ -23,11 +22,11 @@ interface UpsertCardProps {
 }
 
 interface BoardContextProps {
-  columns: Column[];
-  setColumns: React.Dispatch<React.SetStateAction<Column[]>>;
-  upsertColumn: (props: UpsertColumnProps) => void;
-  deleteColumn: (columnId: string) => void;
-  upsertCard: (props: UpsertCardProps) => void;
+  boardColumns: BoardColumn[];
+  setBoardColumns: React.Dispatch<React.SetStateAction<BoardColumn[]>>;
+  upsertBoardColumn: (props: UpsertBoardColumnProps) => void;
+  deleteBoardColumn: (columnId: string) => void;
+  upsertTaskCard: (props: UpsertTaskCardProps) => void;
 }
 
 export const BoardContext = createContext({} as BoardContextProps);
@@ -37,101 +36,109 @@ interface BoardContextProviderProps {
 }
 
 export function BoardProvider({ children }: BoardContextProviderProps) {
-  const [columns, setColumns] = useState(columnsData);
+  const [boardColumns, setBoardColumns] = useState(boardColumnsData);
 
-  function upsertColumn({ columnId, data }: UpsertColumnProps) {
-    if (columnId) {
-      setColumns((prevState) =>
-        prevState.map((column) => {
-          if (column.id === columnId) {
+  function upsertBoardColumn({ boardColumnId, data }: UpsertBoardColumnProps) {
+    if (boardColumnId) {
+      setBoardColumns((prevState) =>
+        prevState.map((boardColumn) => {
+          if (boardColumn.id === boardColumnId) {
             return {
-              ...column,
+              ...boardColumn,
               ...data,
             };
           }
 
-          return column;
+          return boardColumn;
         }),
       );
 
       return;
     }
 
-    setColumns((prevState) => [
+    setBoardColumns((prevState) => [
       ...prevState,
       {
         ...data,
         id: createUniqueId(),
-        cards: [],
+        taskCards: [],
         createdAt: createTimestamp(),
       },
     ]);
   }
 
-  function upsertCard({ columnId, cardId, data }: UpsertCardProps) {
+  function upsertTaskCard({
+    boardColumnId,
+    taskCardId,
+    data,
+  }: UpsertTaskCardProps) {
     const { title } = data;
 
-    if (cardId) {
-      setColumns((prevState) =>
-        prevState.map((column) => {
-          if (column.id === columnId) {
+    if (taskCardId) {
+      setBoardColumns((prevState) =>
+        prevState.map((boardColumn) => {
+          if (boardColumn.id === boardColumnId) {
             return {
-              ...column,
-              cards: column.cards.map((card) => {
-                if (card.id === cardId) {
+              ...boardColumn,
+              taskCards: boardColumn.taskCards.map((taskCard) => {
+                if (taskCard.id === taskCardId) {
                   return {
-                    ...card,
+                    ...taskCard,
                     ...data,
                   };
                 }
 
-                return card;
+                return taskCard;
               }),
             };
           }
 
-          return column;
+          return boardColumn;
         }),
       );
 
       return;
     }
 
-    setColumns((prevState) =>
-      prevState.map((column) => {
-        if (column.id === columnId) {
+    setBoardColumns((prevState) =>
+      prevState.map((boardColumn) => {
+        if (boardColumn.id === boardColumnId) {
           return {
-            ...column,
-            cards: [
-              ...column.cards,
+            ...boardColumn,
+            taskCards: [
+              ...boardColumn.taskCards,
               {
                 id: createUniqueId(),
                 title,
+                comments: [],
+                description: null,
+                dueDate: null,
+                tags: [],
                 createdAt: createTimestamp(),
               },
             ],
           };
         }
 
-        return column;
+        return boardColumn;
       }),
     );
   }
 
-  function deleteColumn(columnId: string) {
-    setColumns((prevState) =>
-      prevState.filter((column) => column.id !== columnId),
+  function deleteBoardColumn(boardColumnId: string) {
+    setBoardColumns((prevState) =>
+      prevState.filter((boardColumn) => boardColumn.id !== boardColumnId),
     );
   }
 
   return (
     <BoardContext.Provider
       value={{
-        columns,
-        setColumns,
-        upsertColumn,
-        deleteColumn,
-        upsertCard,
+        boardColumns,
+        setBoardColumns,
+        upsertBoardColumn,
+        deleteBoardColumn,
+        upsertTaskCard,
       }}
     >
       {children}

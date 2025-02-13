@@ -10,17 +10,17 @@ import {
 
 import { Button } from "./ui/button";
 
-interface DeleteColumnAlertProps {
+interface DeleteBoardColumnAlertProps {
   isOpen: boolean;
-  handleDeleteColumn: () => void;
+  handleDeleteBoardColumn: () => void;
   handleCloseDeleteAlert: () => void;
 }
 
-export function DeleteColumnAlert({
+export function DeleteBoardColumnAlert({
   isOpen,
-  handleDeleteColumn,
+  handleDeleteBoardColumn,
   handleCloseDeleteAlert,
-}: DeleteColumnAlertProps) {
+}: DeleteBoardColumnAlertProps) {
   return (
     <AlertDialog
       open={isOpen}
@@ -43,7 +43,7 @@ export function DeleteColumnAlert({
         <AlertDialogFooter>
           <AlertDialogCancel>Cancelar</AlertDialogCancel>
 
-          <Button onClick={handleDeleteColumn}>Continuar</Button>
+          <Button onClick={handleDeleteBoardColumn}>Continuar</Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

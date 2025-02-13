@@ -14,9 +14,9 @@ import {
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useBoard } from "@/hooks/use-board";
-import { Column } from "@/types/column";
+import { BoardColumn } from "@/types/board-column";
 
-const columnFormSchema = z.object({
+const boardColumnFormSchema = z.object({
   title: z
     .string({ required_error: "O título é obrigatório" })
     .trim()
@@ -26,38 +26,38 @@ const columnFormSchema = z.object({
     }),
 });
 
-type ColumnFormData = z.infer<typeof columnFormSchema>;
+type BoardColumnFormData = z.infer<typeof boardColumnFormSchema>;
 
-interface ColumnFormProps {
-  selectedColumn?: Column | null;
+interface BoardColumnFormProps {
+  selectedBoardColumn?: BoardColumn | null;
   handleCloseModal: () => void;
 }
 
-export function ColumnForm({
-  selectedColumn,
+export function BoardColumnForm({
+  selectedBoardColumn,
   handleCloseModal,
-}: ColumnFormProps) {
-  const { upsertColumn } = useBoard();
+}: BoardColumnFormProps) {
+  const { upsertBoardColumn } = useBoard();
 
-  const form = useForm<ColumnFormData>({
-    resolver: zodResolver(columnFormSchema),
-    defaultValues: selectedColumn
+  const form = useForm<BoardColumnFormData>({
+    resolver: zodResolver(boardColumnFormSchema),
+    defaultValues: selectedBoardColumn
       ? {
-          title: selectedColumn.title,
+          title: selectedBoardColumn.title,
         }
       : {
           title: "",
         },
   });
 
-  function onSubmit(values: ColumnFormData) {
-    if (selectedColumn) {
-      upsertColumn({
-        columnId: selectedColumn.id,
+  function onSubmit(values: BoardColumnFormData) {
+    if (selectedBoardColumn) {
+      upsertBoardColumn({
+        boardColumnId: selectedBoardColumn.id,
         data: values,
       });
     } else {
-      upsertColumn({ data: values });
+      upsertBoardColumn({ data: values });
     }
 
     handleCloseModal();
@@ -66,7 +66,7 @@ export function ColumnForm({
   return (
     <div className="space-y-4">
       <span className="font-semibold text-muted-foreground">
-        {selectedColumn ? "Atualizar coluna" : "Adicionar coluna"}
+        {selectedBoardColumn ? "Atualizar coluna" : "Adicionar coluna"}
       </span>
 
       <Form {...form}>
@@ -93,7 +93,7 @@ export function ColumnForm({
             </Button>
 
             <Button type="submit">
-              {selectedColumn ? "Salvar" : "Adicionar"}
+              {selectedBoardColumn ? "Salvar" : "Adicionar"}
             </Button>
           </div>
         </form>

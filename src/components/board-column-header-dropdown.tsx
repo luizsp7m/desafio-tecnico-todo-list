@@ -8,15 +8,15 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 
-interface ColumnHeaderDropdownProps {
-  handleOpenColumnFormModal: () => void;
+interface BoardColumnHeaderDropdownProps {
+  handleOpenBoardColumnFormModal: () => void;
   handleOpenDeleteAlert: () => void;
 }
 
-export function ColumnHeaderDropdown({
-  handleOpenColumnFormModal,
+export function BoardColumnHeaderDropdown({
+  handleOpenBoardColumnFormModal,
   handleOpenDeleteAlert,
-}: ColumnHeaderDropdownProps) {
+}: BoardColumnHeaderDropdownProps) {
   return (
     <>
       <DropdownMenu>
@@ -27,7 +27,7 @@ export function ColumnHeaderDropdown({
         </DropdownMenuTrigger>
 
         <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={handleOpenColumnFormModal}>
+          <DropdownMenuItem onClick={handleOpenBoardColumnFormModal}>
             <Pen /> Renomear
           </DropdownMenuItem>
 

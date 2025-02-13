@@ -14,12 +14,11 @@ import {
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useBoard } from "@/hooks/use-board";
-import { Card } from "@/types/card";
 import { Textarea } from "./ui/textarea";
 import { DatePicker } from "./ui/date-picker";
-import { CARD_TAGS } from "@/constants/card-tags";
+import { TaskCard } from "@/types/task-card";
 
-const cardFormSchema = z.object({
+const taskCardFormSchema = z.object({
   title: z
     .string({ required_error: "O título é obrigatório" })
     .trim()
@@ -37,35 +36,33 @@ const cardFormSchema = z.object({
     .optional(),
 
   dueDate: z.date().optional(),
-
-  tags: z.nativeEnum(CARD_TAGS).array().optional(),
 });
 
-type CardFormData = z.infer<typeof cardFormSchema>;
+type TaskCardFormData = z.infer<typeof taskCardFormSchema>;
 
-interface CardFormProps {
-  selectedCard?: Card | null;
-  columnId: string;
+interface TaskCardFormProps {
+  selectedTaskCard?: TaskCard | null;
+  boardColumnId: string;
   isFullMode?: boolean;
   handleCloseModal: () => void;
 }
 
-export function CardForm({
-  selectedCard,
-  columnId,
+export function TaskCardForm({
+  selectedTaskCard,
+  boardColumnId,
   isFullMode = false,
   handleCloseModal,
-}: CardFormProps) {
-  const { upsertCard } = useBoard();
+}: TaskCardFormProps) {
+  const { upsertTaskCard } = useBoard();
 
-  const form = useForm<CardFormData>({
-    resolver: zodResolver(cardFormSchema),
-    defaultValues: selectedCard
+  const form = useForm<TaskCardFormData>({
+    resolver: zodResolver(taskCardFormSchema),
+    defaultValues: selectedTaskCard
       ? {
-          title: selectedCard.title,
-          description: selectedCard.description,
-          dueDate: selectedCard.dueDate
-            ? new Date(selectedCard.dueDate)
+          title: selectedTaskCard.title,
+          description: selectedTaskCard.description ?? "",
+          dueDate: selectedTaskCard.dueDate
+            ? new Date(selectedTaskCard.dueDate)
             : undefined,
         }
       : {
@@ -73,13 +70,17 @@ export function CardForm({
         },
   });
 
-  function onSubmit(values: CardFormData) {
+  function onSubmit(values: TaskCardFormData) {
     console.log(values);
 
-    if (selectedCard) {
-      upsertCard({ columnId, cardId: selectedCard.id, data: values });
+    if (selectedTaskCard) {
+      upsertTaskCard({
+        boardColumnId,
+        taskCardId: selectedTaskCard.id,
+        data: values,
+      });
     } else {
-      upsertCard({ columnId, data: values });
+      upsertTaskCard({ boardColumnId, data: values });
     }
 
     handleCloseModal();
@@ -88,7 +89,7 @@ export function CardForm({
   return (
     <div className="space-y-4">
       <span className="font-semibold text-muted-foreground">
-        {selectedCard ? "Atualizar tarefa" : "Adicionar tarefa"}
+        {selectedTaskCard ? "Atualizar tarefa" : "Adicionar tarefa"}
       </span>
 
       <Form {...form}>
@@ -147,7 +148,7 @@ export function CardForm({
             </Button>
 
             <Button type="submit">
-              {selectedCard ? "Salvar" : "Adicionar"}
+              {selectedTaskCard ? "Salvar" : "Adicionar"}
             </Button>
           </div>
         </form>

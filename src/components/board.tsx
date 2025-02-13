@@ -1,58 +1,62 @@
 import { Button } from "./ui/button";
 import { FormModal } from "./form-modal";
-import { ColumnForm } from "./column-form";
+import { BoardColumnForm } from "./board-column-form";
 import { useBoard } from "@/hooks/use-board";
 import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
-import { ColumnDraggable } from "./column-draggable";
+import { BoardColumnDraggable } from "./board-column-draggable";
 import { useFormModal } from "@/hooks/use-form-modal";
-import { Column } from "@/types/column";
+import { BoardColumn } from "@/types/board-column";
 
 export function Board() {
   const { formModalIsOpen, handleOpenFormModal, handleCloseFormModal } =
-    useFormModal<Column>();
+    useFormModal<BoardColumn>();
 
-  const { columns, setColumns } = useBoard();
+  const { boardColumns, setBoardColumns } = useBoard();
 
   function onDragEnd(result: DropResult) {
     const { source, destination, type } = result;
 
     if (!destination) return;
 
-    if (type === "column") {
-      const updatedColumns = [...columns];
+    if (type === "boardColumn") {
+      const updatedColumns = [...boardColumns];
       const [movedColumn] = updatedColumns.splice(source.index, 1);
       updatedColumns.splice(destination.index, 0, movedColumn);
-      setColumns(updatedColumns);
+      setBoardColumns(updatedColumns);
     } else {
-      const sourceColumn = columns.find((col) => col.id === source.droppableId);
-      const destinationColumn = columns.find(
+      const sourceColumn = boardColumns.find(
+        (col) => col.id === source.droppableId,
+      );
+      const destinationColumn = boardColumns.find(
         (col) => col.id === destination.droppableId,
       );
 
       if (!sourceColumn || !destinationColumn) return;
 
       if (sourceColumn === destinationColumn) {
-        const updatedCards = [...sourceColumn.cards];
+        const updatedCards = [...sourceColumn.taskCards];
         const [movedCard] = updatedCards.splice(source.index, 1);
         updatedCards.splice(destination.index, 0, movedCard);
 
-        setColumns((prev) =>
+        setBoardColumns((prev) =>
           prev.map((col) =>
-            col.id === sourceColumn.id ? { ...col, cards: updatedCards } : col,
+            col.id === sourceColumn.id
+              ? { ...col, taskCards: updatedCards }
+              : col,
           ),
         );
       } else {
-        const sourceCards = [...sourceColumn.cards];
-        const destinationCards = [...destinationColumn.cards];
+        const sourceCards = [...sourceColumn.taskCards];
+        const destinationCards = [...destinationColumn.taskCards];
         const [movedCard] = sourceCards.splice(source.index, 1);
         destinationCards.splice(destination.index, 0, movedCard);
 
-        setColumns((prev) =>
+        setBoardColumns((prev) =>
           prev.map((col) =>
             col.id === sourceColumn.id
-              ? { ...col, cards: sourceCards }
+              ? { ...col, taskCards: sourceCards }
               : col.id === destinationColumn.id
-                ? { ...col, cards: destinationCards }
+                ? { ...col, taskCards: destinationCards }
                 : col,
           ),
         );
@@ -68,22 +72,26 @@ export function Board() {
         isOpen={formModalIsOpen}
         handleCloseModal={handleCloseFormModal}
       >
-        <ColumnForm handleCloseModal={handleCloseFormModal} />
+        <BoardColumnForm handleCloseModal={handleCloseFormModal} />
       </FormModal>
 
       <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="board" type="column" direction="horizontal">
+        <Droppable
+          droppableId="board"
+          type="boardColumn"
+          direction="horizontal"
+        >
           {(provided) => (
             <div
               ref={provided.innerRef}
               {...provided.droppableProps}
               className="flex items-start overflow-x-auto"
             >
-              {columns.map((column, columnIndex) => (
-                <ColumnDraggable
-                  key={column.id}
-                  column={column}
-                  columnIndex={columnIndex}
+              {boardColumns.map((boardColumn, boardColumnIndex) => (
+                <BoardColumnDraggable
+                  key={boardColumn.id}
+                  boardColumn={boardColumn}
+                  boardColumnIndex={boardColumnIndex}
                 />
               ))}
               {provided.placeholder}
