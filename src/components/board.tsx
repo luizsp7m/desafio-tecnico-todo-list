@@ -1,14 +1,15 @@
 import { Button } from "./ui/button";
-import { CreateItemModal } from "./create-item-modal";
-import { CreateItemForm } from "./create-item-form";
+import { FormModal } from "./form-modal";
+import { ColumnForm } from "./column-form";
 import { useBoard } from "@/hooks/use-board";
 import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
 import { ColumnDraggable } from "./column-draggable";
 import { useFormModal } from "@/hooks/use-form-modal";
+import { Column } from "@/types/column";
 
 export function Board() {
   const { formModalIsOpen, handleOpenFormModal, handleCloseFormModal } =
-    useFormModal();
+    useFormModal<Column>();
 
   const { columns, setColumns } = useBoard();
 
@@ -61,14 +62,14 @@ export function Board() {
 
   return (
     <div className="space-y-3">
-      <Button onClick={handleOpenFormModal}>Adicionar categoria</Button>
+      <Button onClick={() => handleOpenFormModal()}>Adicionar coluna</Button>
 
-      <CreateItemModal
+      <FormModal
         isOpen={formModalIsOpen}
         handleCloseModal={handleCloseFormModal}
       >
-        <CreateItemForm type="column" handleCloseModal={handleCloseFormModal} />
-      </CreateItemModal>
+        <ColumnForm handleCloseModal={handleCloseFormModal} />
+      </FormModal>
 
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="board" type="column" direction="horizontal">

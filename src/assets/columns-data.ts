@@ -1,36 +1,37 @@
 import { Column } from "@/types/column";
-import { v4 as uuid } from "uuid";
+import { createTimestamp } from "@/utils/create-timestamp";
+import { createUniqueId } from "@/utils/create-unique-id";
 
 export const columnsData: Column[] = [
   {
-    id: uuid(),
+    id: createUniqueId(),
     title: "Coluna 1",
     cards: [
       {
-        id: uuid(),
-        createdAt: new Date().toISOString(),
+        id: createUniqueId(),
+        createdAt: createTimestamp(),
         title: "Tarefa 1",
       },
 
       {
-        id: uuid(),
-        createdAt: new Date().toISOString(),
+        id: createUniqueId(),
+        createdAt: createTimestamp(),
         title: "Tarefa 2",
       },
     ],
 
-    createdAt: new Date().toISOString(),
+    createdAt: createTimestamp(),
   },
   {
-    id: uuid(),
+    id: createUniqueId(),
     title: "Coluna 2",
     cards: [],
-    createdAt: new Date().toISOString(),
+    createdAt: createTimestamp(),
   },
   {
-    id: uuid(),
+    id: createUniqueId(),
     title: "Coluna 3",
     cards: [],
-    createdAt: new Date().toISOString(),
+    createdAt: createTimestamp(),
   },
 ];

@@ -1,12 +1,12 @@
 import { Column } from "@/types/column";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
-import { Button } from "./ui/button";
-import { Plus, Trash } from "lucide-react";
+import { Plus } from "lucide-react";
 import { CardDraggable } from "./card-draggable";
-import { useBoard } from "@/hooks/use-board";
-import { CreateItemModal } from "./create-item-modal";
-import { CreateItemForm } from "./create-item-form";
+import { FormModal } from "./form-modal";
 import { useFormModal } from "@/hooks/use-form-modal";
+import { ColumnHeaderDropdown } from "./column-header-dropdown";
+import { Card } from "@/types/card";
+import { CardForm } from "./card-form";
 
 interface ColumnDraggableProps {
   column: Column;
@@ -14,10 +14,12 @@ interface ColumnDraggableProps {
 }
 
 export function ColumnDraggable({ column, columnIndex }: ColumnDraggableProps) {
-  const { deleteColumn } = useBoard();
-
-  const { formModalIsOpen, handleOpenFormModal, handleCloseFormModal } =
-    useFormModal();
+  const {
+    formModalIsOpen,
+    selectedItem: selectedCard,
+    handleOpenFormModal,
+    handleCloseFormModal,
+  } = useFormModal<Card>();
 
   return (
     <>
@@ -34,13 +36,7 @@ export function ColumnDraggable({ column, columnIndex }: ColumnDraggableProps) {
             >
               {column.title}
 
-              <Button
-                size="icon"
-                variant="secondary"
-                onClick={() => deleteColumn(column.id)}
-              >
-                <Trash />
-              </Button>
+              <ColumnHeaderDropdown column={column} />
             </div>
 
             <Droppable droppableId={column.id} type="card">
@@ -54,6 +50,7 @@ export function ColumnDraggable({ column, columnIndex }: ColumnDraggableProps) {
                       key={card.id}
                       card={card}
                       cardIndex={cardIndex}
+                      handleOpenFormModal={() => handleOpenFormModal(card)}
                     />
                   ))}
                   {provided.placeholder}
@@ -62,7 +59,7 @@ export function ColumnDraggable({ column, columnIndex }: ColumnDraggableProps) {
             </Droppable>
 
             <button
-              onClick={handleOpenFormModal}
+              onClick={() => handleOpenFormModal()}
               className="flex w-full items-center justify-center gap-2 border-t p-3 text-sm dark:border-t-primary/10"
             >
               <Plus size={16} />
@@ -72,16 +69,16 @@ export function ColumnDraggable({ column, columnIndex }: ColumnDraggableProps) {
         )}
       </Draggable>
 
-      <CreateItemModal
+      <FormModal
         isOpen={formModalIsOpen}
         handleCloseModal={handleCloseFormModal}
       >
-        <CreateItemForm
-          type="card"
-          handleCloseModal={handleCloseFormModal}
+        <CardForm
           columnId={column.id}
+          handleCloseModal={handleCloseFormModal}
+          selectedCard={selectedCard}
         />
-      </CreateItemModal>
+      </FormModal>
     </>
   );
 }

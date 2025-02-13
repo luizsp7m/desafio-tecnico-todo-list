@@ -1,7 +1,7 @@
 import { Board } from "./components/board";
 import { ModeToggle } from "./components/layout-components/mode-toggle";
-import { BoardProvider } from "./contexts/BoardContext";
-import { ThemeProvider } from "./contexts/ThemeContext";
+import { BoardProvider } from "./contexts/board-context";
+import { ThemeProvider } from "./contexts/theme-context";
 
 export function App() {
   return (

@@ -14,21 +14,9 @@ import {
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useBoard } from "@/hooks/use-board";
+import { Column } from "@/types/column";
 
-function formTitle(type: CreateItemFormProps["type"]) {
-  switch (type) {
-    case "column":
-      return "Adicionar categoria";
-
-    case "card":
-      return "Adicionar tarefa";
-
-    default:
-      return "";
-  }
-}
-
-const createItemSchema = z.object({
+const columnFormSchema = z.object({
   title: z
     .string({ required_error: "O título é obrigatório" })
     .min(3, { message: "O título deve ter pelo menos 3 caracteres" })
@@ -37,46 +25,47 @@ const createItemSchema = z.object({
     }),
 });
 
-type CreateItemSchema = z.infer<typeof createItemSchema>;
+type ColumnFormData = z.infer<typeof columnFormSchema>;
 
-interface CreateItemFormProps {
-  type: "column" | "card";
-  columnId?: string;
+interface ColumnFormProps {
+  selectedColumn?: Column | null;
   handleCloseModal: () => void;
 }
 
-export function CreateItemForm({
-  type,
-  columnId,
+export function ColumnForm({
+  selectedColumn,
   handleCloseModal,
-}: CreateItemFormProps) {
-  const { createNewColumn, createNewCard } = useBoard();
+}: ColumnFormProps) {
+  const { upsertColumn } = useBoard();
 
-  const form = useForm<CreateItemSchema>({
-    resolver: zodResolver(createItemSchema),
-    defaultValues: {
-      title: "",
-    },
+  const form = useForm<ColumnFormData>({
+    resolver: zodResolver(columnFormSchema),
+    defaultValues: selectedColumn
+      ? {
+          title: selectedColumn.title,
+        }
+      : {
+          title: "",
+        },
   });
 
-  function onSubmit(values: CreateItemSchema) {
-    if (type === "column") {
-      createNewColumn({ title: values.title });
-      handleCloseModal();
-      return;
+  function onSubmit(values: ColumnFormData) {
+    if (selectedColumn) {
+      upsertColumn({
+        columnId: selectedColumn.id,
+        data: values,
+      });
+    } else {
+      upsertColumn({ data: values });
     }
 
-    if (type === "card" && columnId) {
-      createNewCard({ title: values.title, columnId });
-      handleCloseModal();
-      return;
-    }
+    handleCloseModal();
   }
 
   return (
     <div className="space-y-4">
       <span className="font-semibold text-muted-foreground">
-        {formTitle(type)}
+        {selectedColumn ? "Atualizar coluna" : "Adicionar coluna"}
       </span>
 
       <Form {...form}>
@@ -102,7 +91,9 @@ export function CreateItemForm({
               Cancelar
             </Button>
 
-            <Button type="submit">Adicionar</Button>
+            <Button type="submit">
+              {selectedColumn ? "Salvar" : "Adicionar"}
+            </Button>
           </div>
         </form>
       </Form>

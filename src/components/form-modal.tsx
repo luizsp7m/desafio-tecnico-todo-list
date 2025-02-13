@@ -8,17 +8,17 @@ import {
   DialogTitle,
 } from "./ui/dialog";
 
-interface CreateItemModalProps {
+interface FormModalProps {
   isOpen: boolean;
   handleCloseModal: () => void;
   children: ReactNode;
 }
 
-export function CreateItemModal({
+export function FormModal({
   isOpen,
   handleCloseModal,
   children,
-}: CreateItemModalProps) {
+}: FormModalProps) {
   return (
     <Dialog
       open={isOpen}

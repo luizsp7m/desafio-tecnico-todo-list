@@ -1,4 +1,4 @@
-import { BoardContext } from "@/contexts/BoardContext";
+import { BoardContext } from "@/contexts/board-context";
 import { useContext } from "react";
 
 export function useBoard() {
