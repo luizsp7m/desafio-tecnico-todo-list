@@ -7,6 +7,9 @@ import { useFormModal } from "@/hooks/use-form-modal";
 import { ColumnHeaderDropdown } from "./column-header-dropdown";
 import { Card } from "@/types/card";
 import { CardForm } from "./card-form";
+import { useDeleteAlert } from "@/hooks/use-delete-alert";
+import { DeleteColumnAlert } from "./delete-column-alert";
+import { useBoard } from "@/hooks/use-board";
 
 interface ColumnDraggableProps {
   column: Column;
@@ -20,6 +23,16 @@ export function ColumnDraggable({ column, columnIndex }: ColumnDraggableProps) {
     handleOpenFormModal,
     handleCloseFormModal,
   } = useFormModal<Card>();
+
+  const { deleteAlertIsOpen, handleOpenDeleteAlert, handleCloseDeleteAlert } =
+    useDeleteAlert();
+
+  const { deleteColumn } = useBoard();
+
+  function handleDeleteColumn() {
+    deleteColumn(column.id);
+    handleCloseDeleteAlert();
+  }
 
   return (
     <>
@@ -36,7 +49,10 @@ export function ColumnDraggable({ column, columnIndex }: ColumnDraggableProps) {
             >
               {column.title}
 
-              <ColumnHeaderDropdown column={column} />
+              <ColumnHeaderDropdown
+                column={column}
+                handleOpenDeleteAlert={handleOpenDeleteAlert}
+              />
             </div>
 
             <Droppable droppableId={column.id} type="card">
@@ -79,6 +95,12 @@ export function ColumnDraggable({ column, columnIndex }: ColumnDraggableProps) {
           selectedCard={selectedCard}
         />
       </FormModal>
+
+      <DeleteColumnAlert
+        isOpen={deleteAlertIsOpen}
+        handleCloseDeleteAlert={handleCloseDeleteAlert}
+        handleDeleteColumn={handleDeleteColumn}
+      />
     </>
   );
 }

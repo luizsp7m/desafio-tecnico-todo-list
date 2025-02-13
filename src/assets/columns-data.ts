@@ -18,6 +18,18 @@ export const columnsData: Column[] = [
         createdAt: createTimestamp(),
         title: "Tarefa 2",
       },
+
+      {
+        id: createUniqueId(),
+        createdAt: createTimestamp(),
+        title: "Tarefa 3",
+      },
+
+      {
+        id: createUniqueId(),
+        createdAt: createTimestamp(),
+        title: "Tarefa 4",
+      },
     ],
 
     createdAt: createTimestamp(),
@@ -25,13 +37,25 @@ export const columnsData: Column[] = [
   {
     id: createUniqueId(),
     title: "Coluna 2",
-    cards: [],
+    cards: [
+      {
+        id: createUniqueId(),
+        createdAt: createTimestamp(),
+        title: "Tarefa 5",
+      },
+    ],
     createdAt: createTimestamp(),
   },
   {
     id: createUniqueId(),
     title: "Coluna 3",
-    cards: [],
+    cards: [
+      {
+        id: createUniqueId(),
+        createdAt: createTimestamp(),
+        title: "Tarefa 6",
+      },
+    ],
     createdAt: createTimestamp(),
   },
 ];

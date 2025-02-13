@@ -8,7 +8,6 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 
-import { useBoard } from "@/hooks/use-board";
 import { FormModal } from "./form-modal";
 import { ColumnForm } from "./column-form";
 import { useFormModal } from "@/hooks/use-form-modal";
@@ -16,11 +15,13 @@ import { Column } from "@/types/column";
 
 interface ColumnHeaderDropdownProps {
   column: Column;
+  handleOpenDeleteAlert: () => void;
 }
 
-export function ColumnHeaderDropdown({ column }: ColumnHeaderDropdownProps) {
-  const { deleteColumn } = useBoard();
-
+export function ColumnHeaderDropdown({
+  column,
+  handleOpenDeleteAlert,
+}: ColumnHeaderDropdownProps) {
   const {
     formModalIsOpen,
     selectedItem: selectedColumn,
@@ -42,7 +43,7 @@ export function ColumnHeaderDropdown({ column }: ColumnHeaderDropdownProps) {
             <Pen /> Renomear
           </DropdownMenuItem>
 
-          <DropdownMenuItem onClick={() => deleteColumn(column.id)}>
+          <DropdownMenuItem onClick={handleOpenDeleteAlert}>
             <Trash />
             Excluir
           </DropdownMenuItem>
