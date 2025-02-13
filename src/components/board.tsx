@@ -1,17 +1,9 @@
-import { Button } from "./ui/button";
-import { FormModal } from "./form-modal";
-import { BoardColumnForm } from "./board-column-form";
-import { useBoard } from "@/hooks/use-board";
 import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
 import { BoardColumnDraggable } from "./board-column-draggable";
-import { useFormModal } from "@/hooks/use-form-modal";
-import { BoardColumn } from "@/types/board-column";
+import { useBoardStore } from "@/store/board-store";
 
 export function Board() {
-  const { formModalIsOpen, handleOpenFormModal, handleCloseFormModal } =
-    useFormModal<BoardColumn>();
-
-  const { boardColumns, setBoardColumns } = useBoard();
+  const { boardColumns, setBoardColumns } = useBoardStore();
 
   function onDragEnd(result: DropResult) {
     const { source, destination, type } = result;
@@ -39,8 +31,8 @@ export function Board() {
         const [movedTaskCard] = updatedTaskCards.splice(source.index, 1);
         updatedTaskCards.splice(destination.index, 0, movedTaskCard);
 
-        setBoardColumns((prev) =>
-          prev.map((col) =>
+        setBoardColumns(
+          boardColumns.map((col) =>
             col.id === source.droppableId
               ? { ...col, taskCards: updatedTaskCards }
               : col,
@@ -53,8 +45,8 @@ export function Board() {
         const [movedTaskCard] = sourceTaskCards.splice(source.index, 1);
         destinationTaskCards.splice(destination.index, 0, movedTaskCard);
 
-        setBoardColumns((prev) =>
-          prev.map((col) =>
+        setBoardColumns(
+          boardColumns.map((col) =>
             col.id === source.droppableId
               ? { ...col, taskCards: sourceTaskCards }
               : col.id === destination.droppableId
@@ -67,42 +59,25 @@ export function Board() {
   }
 
   return (
-    <>
-      <Button onClick={() => handleOpenFormModal()} className="self-start">
-        Adicionar coluna
-      </Button>
-
-      <FormModal
-        isOpen={formModalIsOpen}
-        handleCloseModal={handleCloseFormModal}
-      >
-        <BoardColumnForm handleCloseModal={handleCloseFormModal} />
-      </FormModal>
-
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable
-          droppableId="board"
-          type="boardColumn"
-          direction="horizontal"
-        >
-          {(provided) => (
-            <div
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-              className="flex flex-1 items-start overflow-x-auto pb-3 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 [&::-webkit-scrollbar-track]:bg-gray-100 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar]:w-2"
-            >
-              {boardColumns.map((boardColumn, boardColumnIndex) => (
-                <BoardColumnDraggable
-                  key={boardColumn.id}
-                  boardColumn={boardColumn}
-                  boardColumnIndex={boardColumnIndex}
-                />
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
-    </>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Droppable droppableId="board" type="boardColumn" direction="horizontal">
+        {(provided) => (
+          <div
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            className="flex flex-1 items-start overflow-x-auto pb-3 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 [&::-webkit-scrollbar-track]:bg-gray-100 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar]:w-2"
+          >
+            {boardColumns.map((boardColumn, boardColumnIndex) => (
+              <BoardColumnDraggable
+                key={boardColumn.id}
+                boardColumn={boardColumn}
+                boardColumnIndex={boardColumnIndex}
+              />
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
   );
 }

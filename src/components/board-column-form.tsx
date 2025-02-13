@@ -15,6 +15,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useBoard } from "@/hooks/use-board";
 import { BoardColumn } from "@/types/board-column";
+import { useBoardColumnFormModalStore } from "@/store/board-column-form-modal-store";
 
 const boardColumnFormSchema = z.object({
   title: z
@@ -26,18 +27,15 @@ const boardColumnFormSchema = z.object({
     }),
 });
 
-type BoardColumnFormData = z.infer<typeof boardColumnFormSchema>;
+export type BoardColumnFormData = z.infer<typeof boardColumnFormSchema>;
 
 interface BoardColumnFormProps {
   selectedBoardColumn?: BoardColumn | null;
-  handleCloseModal: () => void;
 }
 
-export function BoardColumnForm({
-  selectedBoardColumn,
-  handleCloseModal,
-}: BoardColumnFormProps) {
+export function BoardColumnForm({ selectedBoardColumn }: BoardColumnFormProps) {
   const { upsertBoardColumn } = useBoard();
+  const { handleCloseBoardColumnFormModal } = useBoardColumnFormModalStore();
 
   const form = useForm<BoardColumnFormData>({
     resolver: zodResolver(boardColumnFormSchema),
@@ -60,7 +58,7 @@ export function BoardColumnForm({
       upsertBoardColumn({ data: values });
     }
 
-    handleCloseModal();
+    handleCloseBoardColumnFormModal();
   }
 
   return (
@@ -88,7 +86,11 @@ export function BoardColumnForm({
           />
 
           <div className="flex justify-end gap-2">
-            <Button type="button" variant="outline" onClick={handleCloseModal}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleCloseBoardColumnFormModal}
+            >
               Cancelar
             </Button>
 
