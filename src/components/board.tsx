@@ -19,10 +19,10 @@ export function Board() {
     if (!destination) return;
 
     if (type === "boardColumn") {
-      const updatedColumns = [...boardColumns];
-      const [movedColumn] = updatedColumns.splice(source.index, 1);
-      updatedColumns.splice(destination.index, 0, movedColumn);
-      setBoardColumns(updatedColumns);
+      const updatedBoardColumns = [...boardColumns];
+      const [movedBoardColumn] = updatedBoardColumns.splice(source.index, 1);
+      updatedBoardColumns.splice(destination.index, 0, movedBoardColumn);
+      setBoardColumns(updatedBoardColumns);
     } else {
       const sourceColumn = boardColumns.find(
         (col) => col.id === source.droppableId,
@@ -33,30 +33,32 @@ export function Board() {
 
       if (!sourceColumn || !destinationColumn) return;
 
+      // Movendo dentro da mesma coluna
       if (sourceColumn === destinationColumn) {
-        const updatedCards = [...sourceColumn.taskCards];
-        const [movedCard] = updatedCards.splice(source.index, 1);
-        updatedCards.splice(destination.index, 0, movedCard);
+        const updatedTaskCards = [...sourceColumn.taskCards];
+        const [movedTaskCard] = updatedTaskCards.splice(source.index, 1);
+        updatedTaskCards.splice(destination.index, 0, movedTaskCard);
 
         setBoardColumns((prev) =>
           prev.map((col) =>
-            col.id === sourceColumn.id
-              ? { ...col, taskCards: updatedCards }
+            col.id === source.droppableId
+              ? { ...col, taskCards: updatedTaskCards }
               : col,
           ),
         );
       } else {
-        const sourceCards = [...sourceColumn.taskCards];
-        const destinationCards = [...destinationColumn.taskCards];
-        const [movedCard] = sourceCards.splice(source.index, 1);
-        destinationCards.splice(destination.index, 0, movedCard);
+        // Movendo entre colunas
+        const sourceTaskCards = [...sourceColumn.taskCards];
+        const destinationTaskCards = [...destinationColumn.taskCards];
+        const [movedTaskCard] = sourceTaskCards.splice(source.index, 1);
+        destinationTaskCards.splice(destination.index, 0, movedTaskCard);
 
         setBoardColumns((prev) =>
           prev.map((col) =>
-            col.id === sourceColumn.id
-              ? { ...col, taskCards: sourceCards }
-              : col.id === destinationColumn.id
-                ? { ...col, taskCards: destinationCards }
+            col.id === source.droppableId
+              ? { ...col, taskCards: sourceTaskCards }
+              : col.id === destination.droppableId
+                ? { ...col, taskCards: destinationTaskCards }
                 : col,
           ),
         );
