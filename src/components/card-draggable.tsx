@@ -2,6 +2,8 @@ import clsx from "clsx";
 
 import { Card } from "@/types/card";
 import { Draggable } from "@hello-pangea/dnd";
+import { Calendar } from "lucide-react";
+import { dateFormatter } from "@/utils/date-formatter";
 
 interface CardProps {
   card: Card;
@@ -23,14 +25,25 @@ export function CardDraggable({
           {...provided.dragHandleProps}
           onClick={handleOpenFormModal}
           className={clsx(
-            "mb-2 rounded bg-white p-3 text-sm text-muted-foreground shadow-sm dark:bg-zinc-700 dark:text-white",
+            "mb-2 space-y-2 truncate rounded bg-white p-3 text-sm text-muted-foreground shadow-sm dark:bg-zinc-700 dark:text-white",
 
             {
               "bg-zinc-300 dark:bg-zinc-500": snapshot.isDragging,
             },
           )}
         >
-          {card.title}
+          <span className="truncate">{card.title}</span>
+
+          {card.dueDate && (
+            <div>
+              <div className="flex items-center gap-1">
+                <Calendar size={14} />
+                <span className="text-[0.75rem]">
+                  {dateFormatter(card.dueDate)}
+                </span>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </Draggable>

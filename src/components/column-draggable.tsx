@@ -49,13 +49,13 @@ export function ColumnDraggable({ column, columnIndex }: ColumnDraggableProps) {
           <div
             ref={provided.innerRef}
             {...provided.draggableProps}
-            className="mr-3 w-64 rounded bg-secondary shadow-sm"
+            className="mr-3 w-80 rounded bg-secondary shadow-sm"
           >
             <div
               {...provided.dragHandleProps}
-              className="flex cursor-grab items-center justify-between border-b p-3 text-sm dark:border-b-primary/10"
+              className="flex cursor-grab items-center justify-between gap-2 truncate border-b p-3 text-sm dark:border-b-primary/10"
             >
-              {column.title}
+              <span className="truncate">{column.title}</span>
 
               <ColumnHeaderDropdown
                 handleOpenColumnFormModal={() =>
@@ -108,10 +108,12 @@ export function ColumnDraggable({ column, columnIndex }: ColumnDraggableProps) {
       <FormModal
         isOpen={cardFormModalIsOpen}
         handleCloseModal={handleCloseCardModalModal}
+        lgModal={!!selectedCard}
       >
         <CardForm
           columnId={column.id}
           handleCloseModal={handleCloseCardModalModal}
+          isFullMode
           selectedCard={selectedCard}
         />
       </FormModal>

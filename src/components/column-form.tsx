@@ -19,6 +19,7 @@ import { Column } from "@/types/column";
 const columnFormSchema = z.object({
   title: z
     .string({ required_error: "O título é obrigatório" })
+    .trim()
     .min(3, { message: "O título deve ter pelo menos 3 caracteres" })
     .max(128, {
       message: "O título não deve ter mais do que 128 caracteres",
