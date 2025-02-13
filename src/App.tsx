@@ -7,7 +7,7 @@ export function App() {
   return (
     <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
       <BoardProvider>
-        <div className="mx-auto min-h-svh space-y-3 p-4">
+        <div className="flex h-svh flex-col gap-3 p-3">
           <ModeToggle />
           <Board />
         </div>

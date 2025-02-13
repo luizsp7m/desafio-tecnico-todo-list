@@ -67,8 +67,10 @@ export function Board() {
   }
 
   return (
-    <div className="space-y-3">
-      <Button onClick={() => handleOpenFormModal()}>Adicionar coluna</Button>
+    <>
+      <Button onClick={() => handleOpenFormModal()} className="self-start">
+        Adicionar coluna
+      </Button>
 
       <FormModal
         isOpen={formModalIsOpen}
@@ -87,7 +89,7 @@ export function Board() {
             <div
               ref={provided.innerRef}
               {...provided.droppableProps}
-              className="flex items-start overflow-x-auto pb-3 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 [&::-webkit-scrollbar-track]:bg-gray-100 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 [&::-webkit-scrollbar]:h-2"
+              className="flex flex-1 items-start overflow-x-auto pb-3 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 [&::-webkit-scrollbar-track]:bg-gray-100 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar]:w-2"
             >
               {boardColumns.map((boardColumn, boardColumnIndex) => (
                 <BoardColumnDraggable
@@ -101,6 +103,6 @@ export function Board() {
           )}
         </Droppable>
       </DragDropContext>
-    </div>
+    </>
   );
 }

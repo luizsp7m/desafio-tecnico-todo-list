@@ -1,7 +1,7 @@
 import clsx from "clsx";
 
 import { Draggable } from "@hello-pangea/dnd";
-import { Calendar } from "lucide-react";
+import { BookText, Calendar } from "lucide-react";
 import { dateFormatter } from "@/utils/date-formatter";
 import { TaskCard } from "@/types/task-card";
 
@@ -36,12 +36,18 @@ export function TaskCardDraggable({
           <div className="flex items-center justify-between gap-2">
             <span className="truncate">{taskCard.title}</span>
 
-            {taskCard.dueDate && (
-              <div className="flex items-center gap-1">
-                <Calendar size={14} />
-                <span className="text-[0.75rem]">
-                  {dateFormatter(taskCard.dueDate)}
-                </span>
+            {(taskCard.description || taskCard.dueDate) && (
+              <div className="flex items-center gap-2">
+                {taskCard.dueDate && (
+                  <div className="flex items-center gap-1">
+                    <Calendar size={14} />
+                    <span className="text-[0.75rem]">
+                      {dateFormatter(taskCard.dueDate)}
+                    </span>
+                  </div>
+                )}
+
+                {taskCard.description && <BookText size={14} />}
               </div>
             )}
           </div>

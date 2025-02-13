@@ -114,7 +114,6 @@ export function BoardColumnDraggable({
       <FormModal
         isOpen={taskCardFormModalIsOpen}
         handleCloseModal={handleCloseTaskCardModalModal}
-        lgModal={!!selectedTaskCard}
       >
         <TaskCardForm
           boardColumnId={boardColumn.id}
