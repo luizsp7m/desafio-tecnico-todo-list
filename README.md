@@ -74,7 +74,12 @@ Para iniciar o servidor de desenvolvimento, execute:
 ``` 
 npm run dev
 ```
-
 O projeto estará disponível no endereço [http://localhost:5173/](http://localhost:5173/)
 
 Se preferir, pode ver o projeto online aqui: [https://desafio-tecnico-todo-list.vercel.app/](https://desafio-tecnico-todo-list.vercel.app/)
+
+### 5. Executar testes unitários (opcional)
+
+``` 
+npm run test
+```
