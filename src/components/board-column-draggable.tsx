@@ -20,14 +20,13 @@ export function BoardColumnDraggable({
         <div
           ref={provided.innerRef}
           {...provided.draggableProps}
-          className="mr-3 w-80 min-w-80 max-w-80 rounded bg-secondary shadow-sm"
+          className="mr-3 w-80 min-w-80 max-w-80 overflow-hidden rounded bg-secondary shadow-sm"
         >
           <div
             {...provided.dragHandleProps}
-            className="flex cursor-grab items-center justify-between gap-2 truncate border-b p-3 text-sm dark:border-b-primary/10"
+            className="flex cursor-grab items-center justify-between gap-2 truncate border-b bg-secondary p-3 text-sm dark:border-b-primary/10"
           >
             <span className="truncate">{boardColumn.title}</span>
-
             <BoardColumnHeaderDropdown boardColumn={boardColumn} />
           </div>
 
@@ -36,7 +35,7 @@ export function BoardColumnDraggable({
               <div
                 ref={provided.innerRef}
                 className={clsx(
-                  "min-h-[128px] p-3 transition-colors",
+                  "-mb-2 min-h-[128px] bg-secondary p-3 transition-colors",
                   snapshot.isDraggingOver
                     ? "bg-zinc-200 dark:bg-zinc-600"
                     : "bg-transparent",

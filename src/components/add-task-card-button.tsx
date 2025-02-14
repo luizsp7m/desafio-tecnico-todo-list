@@ -13,7 +13,7 @@ export function AddTaskCardButton({ boardColumnId }: AddTaskCardButtonProps) {
       onClick={() =>
         handleOpenTaskCardFormModal({ boardColumnId, selectedTaskCard: null })
       }
-      className="flex w-full items-center justify-center gap-2 border-t p-3 text-sm dark:border-t-primary/10"
+      className="flex w-full items-center justify-center gap-2 border-t bg-secondary p-3 text-sm dark:border-t-primary/10"
     >
       <Plus size={16} />
       Adicionar tarefa
