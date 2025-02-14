@@ -5,7 +5,7 @@ import { createUniqueId } from "@/utils/create-unique-id";
 export const boardColumnsData: BoardColumn[] = [
   {
     id: createUniqueId(),
-    title: "Coluna 1",
+    title: "BACKLOG",
     taskCards: [
       {
         id: createUniqueId(),
@@ -44,7 +44,7 @@ export const boardColumnsData: BoardColumn[] = [
   },
   {
     id: createUniqueId(),
-    title: "Coluna 2",
+    title: "A FAZER",
     taskCards: [
       {
         id: createUniqueId(),
@@ -58,7 +58,7 @@ export const boardColumnsData: BoardColumn[] = [
   },
   {
     id: createUniqueId(),
-    title: "Coluna 3",
+    title: "EM ANDAMENTO",
     taskCards: [
       {
         id: createUniqueId(),
@@ -68,6 +68,18 @@ export const boardColumnsData: BoardColumn[] = [
         createdAt: createTimestamp(),
       },
     ],
+    createdAt: createTimestamp(),
+  },
+  {
+    id: createUniqueId(),
+    title: "FASE DE TESTES",
+    taskCards: [],
+    createdAt: createTimestamp(),
+  },
+  {
+    id: createUniqueId(),
+    title: "CONCLUÍDO",
+    taskCards: [],
     createdAt: createTimestamp(),
   },
 ];

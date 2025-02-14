@@ -17,6 +17,7 @@ import { Textarea } from "./ui/textarea";
 import { DatePicker } from "./ui/date-picker";
 import { useBoardStore } from "@/store/board-store";
 import { useTaskCardFormModalStore } from "@/store/task-card-form-modal-store";
+import { DeleteTaskCardButton } from "./delete-task-card-button";
 
 const taskCardFormSchema = z.object({
   title: z
@@ -133,18 +134,27 @@ export function TaskCardForm() {
             </>
           )}
 
-          <div className="flex justify-end gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleCloseTaskCardFormModal}
-            >
-              Cancelar
-            </Button>
+          <div className="flex items-center">
+            {selectedTaskCard && boardColumnId && (
+              <DeleteTaskCardButton
+                taskCardId={selectedTaskCard.id}
+                boardColumnId={boardColumnId}
+              />
+            )}
 
-            <Button type="submit">
-              {selectedTaskCard ? "Salvar" : "Adicionar"}
-            </Button>
+            <div className="flex flex-1 justify-end gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleCloseTaskCardFormModal}
+              >
+                Cancelar
+              </Button>
+
+              <Button type="submit">
+                {selectedTaskCard ? "Salvar" : "Adicionar"}
+              </Button>
+            </div>
           </div>
         </form>
       </Form>

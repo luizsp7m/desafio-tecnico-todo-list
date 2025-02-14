@@ -17,6 +17,11 @@ interface UpsertTaskCardProps {
   data: TaskCardFormData;
 }
 
+interface DeleteTaskCardProps {
+  boardColumnId: string;
+  taskCardId: string;
+}
+
 type BoardStore = {
   boardColumns: BoardColumn[];
   setBoardColumns: (boardColumns: BoardColumn[]) => void;
@@ -25,6 +30,7 @@ type BoardStore = {
   deleteBoardColumn: (boardColumnId: string) => void;
 
   upsertTaskCard: (props: UpsertTaskCardProps) => void;
+  deleteTaskCard: (props: DeleteTaskCardProps) => void;
 };
 
 export const useBoardStore = create<BoardStore>((set) => ({
@@ -120,4 +126,20 @@ export const useBoardStore = create<BoardStore>((set) => ({
             }),
           },
     ),
+
+  deleteTaskCard: ({ taskCardId, boardColumnId }) =>
+    set((state) => ({
+      boardColumns: state.boardColumns.map((boardColumn) => {
+        if (boardColumn.id === boardColumnId) {
+          return {
+            ...boardColumn,
+            taskCards: boardColumn.taskCards.filter(
+              (taskCard) => taskCard.id !== taskCardId,
+            ),
+          };
+        }
+
+        return boardColumn;
+      }),
+    })),
 }));

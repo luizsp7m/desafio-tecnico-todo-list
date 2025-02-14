@@ -5,9 +5,11 @@ interface BoardColumnFormModalStoreProps {
   boardColumnFormModalIsOpen: boolean;
   selectedBoardColumn: BoardColumn | null;
 
-  handleOpenBoardColumnFormModal: (
-    selectedBoardColumn: BoardColumn | null,
-  ) => void;
+  handleOpenBoardColumnFormModal: ({
+    selectedBoardColumn,
+  }: {
+    selectedBoardColumn: BoardColumn | null;
+  }) => void;
 
   handleCloseBoardColumnFormModal: () => void;
 }
@@ -17,7 +19,7 @@ export const useBoardColumnFormModalStore =
     boardColumnFormModalIsOpen: false,
     selectedBoardColumn: null,
 
-    handleOpenBoardColumnFormModal: (selectedBoardColumn) =>
+    handleOpenBoardColumnFormModal: ({ selectedBoardColumn }) =>
       set(() => ({
         selectedBoardColumn,
         boardColumnFormModalIsOpen: true,

@@ -66,6 +66,7 @@ export function Board() {
             ref={provided.innerRef}
             {...provided.droppableProps}
             className="flex flex-1 items-start overflow-x-auto pb-3 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 [&::-webkit-scrollbar-track]:bg-gray-100 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar]:w-2"
+            id="board"
           >
             {boardColumns.map((boardColumn, boardColumnIndex) => (
               <BoardColumnDraggable

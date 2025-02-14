@@ -45,7 +45,9 @@ export function BoardColumnDraggable({
 
               <BoardColumnHeaderDropdown
                 handleOpenBoardColumnFormModal={() =>
-                  handleOpenBoardColumnFormModal(boardColumn)
+                  handleOpenBoardColumnFormModal({
+                    selectedBoardColumn: boardColumn,
+                  })
                 }
                 handleOpenDeleteAlert={handleOpenDeleteAlert}
               />

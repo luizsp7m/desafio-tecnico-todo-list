@@ -56,6 +56,14 @@ export function BoardColumnForm() {
     }
 
     handleCloseBoardColumnFormModal();
+
+    setTimeout(() => {
+      const board = document.getElementById("board");
+
+      if (board) {
+        board.scrollTo({ left: board.scrollWidth, behavior: "instant" });
+      }
+    }, 0);
   }
 
   return (

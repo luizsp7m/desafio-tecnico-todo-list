@@ -6,8 +6,9 @@ export function AddBoardColumnButton() {
 
   return (
     <Button
-      onClick={() => handleOpenBoardColumnFormModal(null)}
-      className="self-start"
+      onClick={() =>
+        handleOpenBoardColumnFormModal({ selectedBoardColumn: null })
+      }
     >
       Adicionar coluna
     </Button>
