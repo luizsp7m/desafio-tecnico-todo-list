@@ -8,7 +8,7 @@ import { ThemeProvider } from "./components/theme-provider";
 
 export function App() {
   return (
-    <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <div className="flex min-h-svh flex-col gap-3 p-3">
         <div className="flex gap-3">
           <ModeToggle />

@@ -3,6 +3,7 @@ import { TaskCardDraggable } from "./task-card-draggable";
 import { BoardColumnHeaderDropdown } from "./board-column-header-dropdown";
 import { BoardColumn } from "@/types/board-column";
 import { AddTaskCardButton } from "./add-task-card-button";
+import clsx from "clsx";
 
 interface BoardColumnDraggableProps {
   boardColumn: BoardColumn;
@@ -31,10 +32,15 @@ export function BoardColumnDraggable({
           </div>
 
           <Droppable droppableId={boardColumn.id} type="taskCard">
-            {(provided) => (
+            {(provided, snapshot) => (
               <div
                 ref={provided.innerRef}
-                className="-mb-2 min-h-[128px] p-3"
+                className={clsx(
+                  "min-h-[128px] p-3 transition-colors",
+                  snapshot.isDraggingOver
+                    ? "bg-zinc-200 dark:bg-zinc-600"
+                    : "bg-transparent",
+                )}
                 {...provided.droppableProps}
               >
                 {boardColumn.taskCards.map((taskCard, taskCardIndex) => (

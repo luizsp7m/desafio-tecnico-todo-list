@@ -36,7 +36,7 @@ export function TaskCardDraggable({
           className={clsx(
             "mb-2 space-y-2 truncate rounded bg-white p-3 text-sm text-muted-foreground shadow-sm dark:bg-zinc-700 dark:text-white",
             {
-              "bg-zinc-300 dark:bg-zinc-500": snapshot.isDragging,
+              "bg-white dark:bg-zinc-500": snapshot.isDragging,
             },
           )}
         >
