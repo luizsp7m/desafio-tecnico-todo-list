@@ -73,7 +73,11 @@ export function BoardColumnForm() {
       </span>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-4"
+          data-testid="form-container"
+        >
           <FormField
             control={form.control}
             name="title"
@@ -82,7 +86,7 @@ export function BoardColumnForm() {
                 <FormLabel>Título</FormLabel>
 
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} data-testid="title-input" />
                 </FormControl>
 
                 <FormMessage />
@@ -99,7 +103,7 @@ export function BoardColumnForm() {
               Cancelar
             </Button>
 
-            <Button type="submit">
+            <Button type="submit" data-testid="submit-button">
               {selectedBoardColumn ? "Salvar" : "Adicionar"}
             </Button>
           </div>

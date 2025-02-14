@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from "./ui/dialog";
 
-interface FormModalProps {
+export interface FormModalProps {
   isOpen: boolean;
   handleCloseModal: () => void;
   children: ReactNode;

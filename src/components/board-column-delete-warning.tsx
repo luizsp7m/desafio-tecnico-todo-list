@@ -50,7 +50,6 @@ export function BoardColumnDeleteWarning() {
 
         <AlertDialogFooter>
           <AlertDialogCancel>Cancelar</AlertDialogCancel>
-
           <Button onClick={handleDeleteBoardColumn}>Continuar</Button>
         </AlertDialogFooter>
       </AlertDialogContent>
