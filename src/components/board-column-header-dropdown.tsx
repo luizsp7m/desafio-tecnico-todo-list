@@ -8,15 +8,21 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 
+import { BoardColumn } from "@/types/board-column";
+import { useBoardColumnFormModalStore } from "@/store/board-column-form-modal-store";
+import { useBoardColumnDeleteWarningStore } from "@/store/board-column-delete-warning-store";
+
 interface BoardColumnHeaderDropdownProps {
-  handleOpenBoardColumnFormModal: () => void;
-  handleOpenDeleteAlert: () => void;
+  boardColumn: BoardColumn;
 }
 
 export function BoardColumnHeaderDropdown({
-  handleOpenBoardColumnFormModal,
-  handleOpenDeleteAlert,
+  boardColumn,
 }: BoardColumnHeaderDropdownProps) {
+  const { handleOpenBoardColumnFormModal } = useBoardColumnFormModalStore();
+  const { handleOpenBoardColumnDeleteWarning } =
+    useBoardColumnDeleteWarningStore();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -26,11 +32,21 @@ export function BoardColumnHeaderDropdown({
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={handleOpenBoardColumnFormModal}>
+        <DropdownMenuItem
+          onClick={() =>
+            handleOpenBoardColumnFormModal({ selectedBoardColumn: boardColumn })
+          }
+        >
           <Pen /> Renomear
         </DropdownMenuItem>
 
-        <DropdownMenuItem onClick={handleOpenDeleteAlert}>
+        <DropdownMenuItem
+          onClick={() =>
+            handleOpenBoardColumnDeleteWarning({
+              selectedBoardColumn: boardColumn,
+            })
+          }
+        >
           <Trash />
           Excluir
         </DropdownMenuItem>

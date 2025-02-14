@@ -1,3 +1,5 @@
+import { useBoardStore } from "@/store/board-store";
+
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -9,24 +11,30 @@ import {
 } from "./ui/alert-dialog";
 
 import { Button } from "./ui/button";
+import { useBoardColumnDeleteWarningStore } from "@/store/board-column-delete-warning-store";
 
-interface DeleteBoardColumnAlertProps {
-  isOpen: boolean;
-  handleDeleteBoardColumn: () => void;
-  handleCloseDeleteAlert: () => void;
-}
+export function BoardColumnDeleteWarning() {
+  const { deleteBoardColumn } = useBoardStore();
 
-export function DeleteBoardColumnAlert({
-  isOpen,
-  handleDeleteBoardColumn,
-  handleCloseDeleteAlert,
-}: DeleteBoardColumnAlertProps) {
+  const {
+    boardColumnDeleteWarningIsOpen,
+    selectedBoardColumn,
+    handleCloseBoardColumnDeleteWarning,
+  } = useBoardColumnDeleteWarningStore();
+
+  function handleDeleteBoardColumn() {
+    if (!selectedBoardColumn) return;
+
+    deleteBoardColumn(selectedBoardColumn.id);
+    handleCloseBoardColumnDeleteWarning();
+  }
+
   return (
     <AlertDialog
-      open={isOpen}
+      open={boardColumnDeleteWarningIsOpen}
       onOpenChange={(isOpen) => {
         if (!isOpen) {
-          handleCloseDeleteAlert();
+          handleCloseBoardColumnDeleteWarning();
         }
       }}
     >
