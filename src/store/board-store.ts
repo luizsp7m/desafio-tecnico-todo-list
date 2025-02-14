@@ -1,4 +1,4 @@
-import { boardColumnsData } from "@/assets/board-columns-data";
+import { boardColumnsData } from "@/data/board-columns-data";
 import { BoardColumnFormData } from "@/components/board-components/forms/board-column-form";
 import { TaskCardFormData } from "@/components/board-components/forms/task-card-form";
 import { BoardColumn } from "@/types/board-column";
