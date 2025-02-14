@@ -9,7 +9,10 @@ import { ThemeProvider } from "./components/theme-provider";
 export function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <div className="flex min-h-svh flex-col gap-3 p-3">
+      <div
+        className="flex min-h-svh flex-col gap-3 p-3"
+        data-testid="app-container"
+      >
         <div className="flex gap-3">
           <ModeToggle />
           <AddBoardColumnButton />
