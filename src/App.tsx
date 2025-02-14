@@ -1,10 +1,10 @@
-import { AddBoardColumnButton } from "./components/add-board-column-button";
-import { Board } from "./components/board";
-import { BoardColumnDeleteWarning } from "./components/board-column-delete-warning";
-import { BoardColumnFormModal } from "./components/board-column-form-modal";
-import { ModeToggle } from "./components/mode-toggle";
-import { TaskCardFormModal } from "./components/task-card-form-modal";
-import { ThemeProvider } from "./components/theme-provider";
+import { BoardColumnFormModal } from "./components/board-components/modals/board-column-form-modal";
+import { ModeToggle } from "./components/ui/mode-toggle";
+import { TaskCardFormModal } from "./components/board-components/modals/task-card-form-modal";
+import { ThemeProvider } from "./components/provider-components/theme-provider";
+import { Board } from "./components/board-components/board";
+import { AddBoardColumnButton } from "./components/board-components/buttons/add-board-column-button";
+import { BoardColumnDeleteWarning } from "./components/board-components/warnings/board-column-delete-warning";
 
 export function App() {
   return (

@@ -8,9 +8,9 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "./ui/alert-dialog";
+} from "@/components/ui/alert-dialog";
 
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { useBoardColumnDeleteWarningStore } from "@/store/board-column-delete-warning-store";
 
 export function BoardColumnDeleteWarning() {

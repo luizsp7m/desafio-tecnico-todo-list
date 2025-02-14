@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { AddBoardColumnButton } from "../add-board-column-button";
 import { userEvent } from "@testing-library/user-event";
 import { useBoardColumnFormModalStore } from "@/store/board-column-form-modal-store";
+import { AddBoardColumnButton } from "../add-board-column-button";
 
 describe("AddBoardColumnButton", () => {
   it("should render a button", () => {

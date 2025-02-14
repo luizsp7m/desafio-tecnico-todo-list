@@ -1,5 +1,5 @@
 import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
-import { BoardColumnDraggable } from "./board-column-draggable";
+import { BoardColumnDraggable } from "./draggable/board-column-draggable";
 import { useBoardStore } from "@/store/board-store";
 
 export function Board() {

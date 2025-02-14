@@ -1,9 +1,10 @@
+import clsx from "clsx";
+
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import { TaskCardDraggable } from "./task-card-draggable";
-import { BoardColumnHeaderDropdown } from "./board-column-header-dropdown";
+import { BoardColumnHeaderDropdown } from "../dropdowns/board-column-header-dropdown";
 import { BoardColumn } from "@/types/board-column";
-import { AddTaskCardButton } from "./add-task-card-button";
-import clsx from "clsx";
+import { AddTaskCardButton } from "../buttons/add-task-card-button";
 
 interface BoardColumnDraggableProps {
   boardColumn: BoardColumn;

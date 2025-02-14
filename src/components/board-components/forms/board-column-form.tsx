@@ -11,10 +11,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
 import { useBoardColumnFormModalStore } from "@/store/board-column-form-modal-store";
 import { useBoardStore } from "@/store/board-store";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 const boardColumnFormSchema = z.object({
   title: z

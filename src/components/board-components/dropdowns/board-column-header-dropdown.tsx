@@ -1,12 +1,12 @@
 import { EllipsisVertical, Pen, Trash } from "lucide-react";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 
 import { BoardColumn } from "@/types/board-column";
 import { useBoardColumnFormModalStore } from "@/store/board-column-form-modal-store";

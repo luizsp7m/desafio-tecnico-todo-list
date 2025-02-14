@@ -11,13 +11,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
-import { DatePicker } from "./ui/date-picker";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { DatePicker } from "@/components/ui/date-picker";
 import { useBoardStore } from "@/store/board-store";
 import { useTaskCardFormModalStore } from "@/store/task-card-form-modal-store";
-import { DeleteTaskCardButton } from "./delete-task-card-button";
+import { DeleteTaskCardButton } from "../buttons/delete-task-card-button";
 
 const taskCardFormSchema = z.object({
   title: z

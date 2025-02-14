@@ -1,5 +1,5 @@
+import { Button } from "@/components/ui/button";
 import { useBoardColumnFormModalStore } from "@/store/board-column-form-modal-store";
-import { Button } from "./ui/button";
 
 export function AddBoardColumnButton() {
   const { handleOpenBoardColumnFormModal } = useBoardColumnFormModalStore();

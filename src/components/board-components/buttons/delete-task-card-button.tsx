@@ -1,8 +1,8 @@
 import { Trash } from "lucide-react";
-import { Button } from "./ui/button";
 import { useState } from "react";
 import { useBoardStore } from "@/store/board-store";
 import { useTaskCardFormModalStore } from "@/store/task-card-form-modal-store";
+import { Button } from "@/components/ui/button";
 
 interface DeleteTaskCardButtonProps {
   taskCardId: string;

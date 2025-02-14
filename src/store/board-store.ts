@@ -1,6 +1,6 @@
 import { boardColumnsData } from "@/assets/board-columns-data";
-import { BoardColumnFormData } from "@/components/board-column-form";
-import { TaskCardFormData } from "@/components/task-card-form";
+import { BoardColumnFormData } from "@/components/board-components/forms/board-column-form";
+import { TaskCardFormData } from "@/components/board-components/forms/task-card-form";
 import { BoardColumn } from "@/types/board-column";
 import { createTimestamp } from "@/utils/create-timestamp";
 import { createUniqueId } from "@/utils/create-unique-id";
