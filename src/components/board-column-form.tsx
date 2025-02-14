@@ -90,7 +90,7 @@ export function BoardColumnForm() {
             )}
           />
 
-          <div className="flex justify-end gap-2">
+          <div className="flex flex-col justify-end gap-2 sm:flex-row">
             <Button
               type="button"
               variant="outline"

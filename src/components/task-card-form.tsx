@@ -134,7 +134,7 @@ export function TaskCardForm() {
             </>
           )}
 
-          <div className="flex items-center">
+          <div className="flex flex-wrap items-center gap-2">
             {selectedTaskCard && boardColumnId && (
               <DeleteTaskCardButton
                 taskCardId={selectedTaskCard.id}
@@ -142,7 +142,7 @@ export function TaskCardForm() {
               />
             )}
 
-            <div className="flex flex-1 justify-end gap-2">
+            <div className="flex flex-1 flex-col justify-end gap-2 sm:flex-row">
               <Button
                 type="button"
                 variant="outline"

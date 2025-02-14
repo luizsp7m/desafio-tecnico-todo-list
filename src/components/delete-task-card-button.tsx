@@ -32,9 +32,10 @@ export function DeleteTaskCardButton({
       type="button"
       variant={confirming ? "destructive" : "outline"}
       onClick={handleClickDeleteButton}
+      className="w-full sm:w-auto"
     >
       <Trash />
-      {confirming ? "Confirmar exclusão" : "Excluir"}
+      {confirming ? "Confirmar" : "Excluir"}
     </Button>
   );
 }
