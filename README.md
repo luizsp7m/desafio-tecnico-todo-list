@@ -1,50 +1,48 @@
-# React + TypeScript + Vite
+### Pré-requisitos
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Antes de começar, certifique-se de ter os seguintes requisitos instalados em sua máquina:
 
-Currently, two official plugins are available:
+- [Node.js](https://nodejs.org/) (versão 18 ou superior)
+- [Git](https://git-scm.com/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Verificar se o Node.js está instalado:
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```
+node -v
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Verificar se o Git está instalado:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
 ```
+git -v
+```
+
+### 1. Clonar o repositório
+
+Clone este repositório em sua máquina local usando o comando abaixo:
+
+```
+git clone https://github.com/luizsp7m/desafio-tecnico-todo-list
+```
+
+### 2. Navegue até o diretório do projeto
+
+```
+cd desafio-tecnico-todo-list
+```
+
+### 3. Instale as dependências
+
+```
+npm install
+```
+
+### 4. Execute o projeto
+
+Para iniciar o servidor de desenvolvimento, execute:
+
+``` 
+npm run dev
+```
+
+O projeto estará disponível no endereço <a href="http://localhost:5173/" target="_blank">http://localhost:5173/</a>
